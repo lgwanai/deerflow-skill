@@ -3,7 +3,7 @@ phase: 2
 slug: streaming-and-error-handling
 status: draft
 nyquist_compliant: false
-wave_0_complete: false
+wave_0_complete: true
 created: 2026-04-27
 ---
 
@@ -38,14 +38,18 @@ created: 2026-04-27
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 02-01-01 | 01 | 1 | STRM-01 | unit | `pytest tests/test_stream.py -k test_token_streaming -v` | ❌ W0 | ⬜ pending |
-| 02-01-02 | 01 | 1 | STRM-02 | unit | `pytest tests/test_stream.py -k test_tool_progress -v` | ❌ W0 | ⬜ pending |
-| 02-01-03 | 01 | 1 | STRM-03 | unit | `pytest tests/test_stream.py -k test_custom_events -v` | ❌ W0 | ⬜ pending |
-| 02-01-04 | 01 | 1 | STRM-04 | unit | `pytest tests/test_stream.py -k test_end_event -v` | ❌ W0 | ⬜ pending |
-| 02-02-01 | 02 | 1 | ERRR-01 | unit | `pytest tests/test_errors.py -k test_recursion_limit -v` | ❌ W0 | ⬜ pending |
-| 02-02-02 | 02 | 1 | ERRR-02 | unit | `pytest tests/test_errors.py -k test_llm_provider_errors -v` | ❌ W0 | ⬜ pending |
-| 02-02-03 | 02 | 1 | ERRR-03 | unit | `pytest tests/test_errors.py -k test_stateless_sessions -v` | ❌ W0 | ⬜ pending |
-| 02-02-04 | 02 | 1 | ERRR-04 | unit | `pytest tests/test_errors.py -k test_actionable_guidance -v` | ❌ W0 | ⬜ pending |
+| 02-00-01 | 00 | 0 | - | fixture | `pytest --fixtures` | ✅ | ⬜ pending |
+| 02-00-02 | 00 | 0 | - | stub | `pytest tests/test_stream.py --collect-only` | ✅ | ⬜ pending |
+| 02-00-03 | 00 | 0 | - | stub | `pytest tests/test_errors.py --collect-only` | ✅ | ⬜ pending |
+| 02-01-01 | 01 | 1 | STRM-01 | unit | `pytest tests/test_stream.py -k test_token_streaming -v` | ✅ W0 | ⬜ pending |
+| 02-01-01 | 01 | 1 | STRM-02 | unit | `pytest tests/test_stream.py -k test_tool_progress -v` | ✅ W0 | ⬜ pending |
+| 02-01-01 | 01 | 1 | STRM-03 | unit | `pytest tests/test_stream.py -k test_custom_events -v` | ✅ W0 | ⬜ pending |
+| 02-01-01 | 01 | 1 | STRM-04 | unit | `pytest tests/test_stream.py -k test_end_event -v` | ✅ W0 | ⬜ pending |
+| 02-01-02 | 01 | 1 | ERRR-02 | unit | `pytest tests/test_stream.py -k test_error -v` | ✅ W0 | ⬜ pending |
+| 02-02-01 | 02 | 2 | ERRR-01 | unit | `pytest tests/test_errors.py -k test_recursion_limit -v` | ✅ W0 | ⬜ pending |
+| 02-02-02 | 02 | 2 | ERRR-02 | unit | `pytest tests/test_errors.py -k test_llm_provider_errors -v` | ✅ W0 | ⬜ pending |
+| 02-02-03 | 02 | 2 | ERRR-03 | unit | `pytest tests/test_errors.py -k test_stateless_sessions -v` | ✅ W0 | ⬜ pending |
+| 02-02-04 | 02 | 2 | ERRR-04 | unit | `pytest tests/test_errors.py -k test_actionable_guidance -v` | ✅ W0 | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -53,11 +57,11 @@ created: 2026-04-27
 
 ## Wave 0 Requirements
 
-- [ ] `tests/test_stream.py` — stubs for STRM-01, STRM-02, STRM-03, STRM-04
-- [ ] `tests/test_errors.py` — stubs for ERRR-01, ERRR-02, ERRR-03, ERRR-04
-- [ ] `tests/conftest.py` — fixtures for mock DeerFlowClient, StreamEvent
+- [x] `tests/test_stream.py` — stubs for STRM-01, STRM-02, STRM-03, STRM-04, ERRR-02
+- [x] `tests/test_errors.py` — stubs for ERRR-01, ERRR-02, ERRR-03, ERRR-04 (extended)
+- [x] `tests/conftest.py` — fixtures for mock DeerFlowClient, StreamEvent
 
-*If none: "Existing infrastructure covers all phase requirements."*
+Wave 0 complete per Plan 02-00-PLAN.md.
 
 ---
 
@@ -74,11 +78,11 @@ created: 2026-04-27
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 20s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 20s
+- [ ] `nyquist_compliant: true` set in frontmatter (after execution)
 
 **Approval:** pending

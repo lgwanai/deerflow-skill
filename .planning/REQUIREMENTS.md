@@ -9,7 +9,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Core Integration
 
-- [ ] **CORE-01**: Skill imports deerflow-harness package successfully
+- [x] **CORE-01**: Skill imports deerflow-harness package successfully
 - [ ] **CORE-02**: Skill validates config.yaml exists and is parseable at initialization
 - [ ] **CORE-03**: Skill validates required credentials are present in config
 - [ ] **CORE-04**: Skill creates DeerFlowClient instance with loaded configuration
@@ -20,7 +20,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **CONF-01**: Skill resolves config.yaml path via DEER_FLOW_CONFIG_PATH or default locations
 - [ ] **CONF-02**: Skill supports environment variable expansion in config values
 - [ ] **CONF-03**: Skill provides actionable error message when config.yaml missing
-- [ ] **CONF-04**: Skill provides actionable error message when deerflow-harness not importable
+- [x] **CONF-04**: Skill provides actionable error message when deerflow-harness not importable
 
 ### Tool Calling
 
@@ -101,7 +101,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CORE-01 | Phase 1 | Pending |
+| CORE-01 | Phase 1 | Complete |
 | CORE-02 | Phase 1 | Pending |
 | CORE-03 | Phase 1 | Pending |
 | CORE-04 | Phase 1 | Pending |
@@ -109,7 +109,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONF-01 | Phase 1 | Pending |
 | CONF-02 | Phase 1 | Pending |
 | CONF-03 | Phase 1 | Pending |
-| CONF-04 | Phase 1 | Pending |
+| CONF-04 | Phase 1 | Complete |
 | TOOL-01 | Phase 3 | Pending |
 | TOOL-02 | Phase 3 | Pending |
 | TOOL-03 | Phase 3 | Pending |

@@ -53,10 +53,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Error Handling
 
-- [ ] **ERRR-01**: Skill catches recursion limit exceeded with clear message
+- [x] **ERRR-01**: Skill catches recursion limit exceeded with clear message
 - [x] **ERRR-02**: Skill catches tool execution errors and continues run
-- [ ] **ERRR-03**: Skill catches LLM provider errors with actionable message
-- [ ] **ERRR-04**: Skill documents stateless behavior (no checkpointer by default)
+- [x] **ERRR-03**: Skill catches LLM provider errors with actionable message
+- [x] **ERRR-04**: Skill documents stateless behavior (no checkpointer by default)
 
 ## v2 Requirements
 
@@ -127,10 +127,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SUBA-02 | Phase 4 | Pending |
 | SUBA-03 | Phase 4 | Pending |
 | SUBA-04 | Phase 4 | Pending |
-| ERRR-01 | Phase 2 | Pending |
+| ERRR-01 | Phase 2 | Complete |
 | ERRR-02 | Phase 2 | Complete |
-| ERRR-03 | Phase 2 | Pending |
-| ERRR-04 | Phase 2 | Pending |
+| ERRR-03 | Phase 2 | Complete |
+| ERRR-04 | Phase 2 | Complete |
 
 **Coverage:**
 - v1 requirements: 30 total

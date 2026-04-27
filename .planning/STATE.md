@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 01-core-integration-01-03-PLAN.md
-last_updated: "2026-04-27T09:12:57.542Z"
-last_activity: "2026-04-27 — Completed plan 01-03: Mode presets and entry point"
+status: in_progress
+stopped_at: Completed 02-streaming-and-error-handling-02-00-PLAN.md
+last_updated: "2026-04-27T11:13:00Z"
+last_activity: "2026-04-27 — Completed plan 02-00: Wave 0 test infrastructure"
 progress:
   total_phases: 4
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
-  percent: 33
+  total_plans: 8
+  completed_plans: 4
+  percent: 50
 ---
 
 # Project State
@@ -21,35 +21,35 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-27)
 
 **Core value:** Enable Claude Code users to leverage deer-flow's production-grade agent orchestration in their local development workflow with minimal setup.
-**Current focus:** Core Integration (Phase 1)
+**Current focus:** Streaming and Error Handling (Phase 2)
 
 ## Current Position
 
-Phase: 1 of 4 (Core Integration)
-Plan: 3 of 3 in current phase
-Status: Phase complete
-Last activity: 2026-04-27 — Completed plan 01-03: Mode presets and entry point
+Phase: 2 of 4 (Streaming and Error Handling)
+Plan: 1 of 3 in current phase
+Status: Wave 0 complete
+Last activity: 2026-04-27 — Completed plan 02-00: Wave 0 test infrastructure
 
-Progress: [███░░░░░░░] 33%
+Progress: [████░░░░░░] 50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 5 min
-- Total execution time: 15 min
+- Total plans completed: 4
+- Average duration: 4 min
+- Total execution time: 17 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Core Integration | 3/3 | 15 min | 5 min |
-| 2. Streaming and Error Handling | 0/2 | - | - |
+| 2. Streaming and Error Handling | 1/3 | 2 min | 2 min |
 | 3. Tool Registry Exposure | 0/2 | - | - |
 | 4. Subagent Delegation | 0/2 | - | - |
 
 **Recent Trend:**
-- Phase 1 complete, ready for Phase 2
+- Phase 2 Wave 0 complete, test infrastructure ready
 
 **Plan History:**
 
@@ -58,6 +58,7 @@ Progress: [███░░░░░░░] 33%
 | Phase 01-core-integration P01 | 5min | 3 tasks | 4 files |
 | Phase 01-core-integration P02 | 5min | 3 tasks | 5 files |
 | Phase 01-core-integration P03 | 10min | 3 tasks | 5 files |
+| Phase 02-streaming-and-error-handling P00 | 2min | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -71,6 +72,7 @@ Recent decisions affecting current work:
 - [Phase 01-core-integration P02]: Error messages include pip/uv commands and shell export examples
 - [Phase 01-core-integration P03]: Deferred deerflow import to runtime for testability without package
 - [Phase 01-core-integration P03]: Used frozen dataclass for immutable ModeConfig
+- [Phase 02-streaming-and-error-handling P00]: Used factory fixture pattern for mock_stream_event and mock_deerflow_client
 
 ### Pending Todos
 
@@ -83,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-27T09:12:00Z
-Stopped at: Completed 01-core-integration-01-03-PLAN.md
+Last session: 2026-04-27T11:13:00Z
+Stopped at: Completed 02-streaming-and-error-handling-02-00-PLAN.md
 Resume file: None

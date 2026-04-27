@@ -1,7 +1,7 @@
 ---
 phase: 2
 slug: streaming-and-error-handling
-status: draft
+status: in_progress
 nyquist_compliant: false
 wave_0_complete: true
 created: 2026-04-27

@@ -49,7 +49,7 @@ Plans:
 **Plans**: 3 plans (including Wave 0 infrastructure)
 
 Plans:
-- [ ] 02-00-PLAN.md - Wave 0: Test stubs and mock fixtures for STRM-* and ERRR-*
+- [x] 02-00-PLAN.md - Wave 0: Test stubs and mock fixtures for STRM-* and ERRR-*
 - [ ] 02-01-PLAN.md - Stream event handler with real-time token output and tool progress
 - [ ] 02-02-PLAN.md - Error handling wrapper with GraphRecursionError and LLM error guidance
 
@@ -91,10 +91,10 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Core Integration | 3/3 | Complete | 2026-04-27 |
-| 2. Streaming and Error Handling | 0/3 | Ready to execute | - |
+| 2. Streaming and Error Handling | 1/3 | In progress | - |
 | 3. Tool Registry Exposure | 0/2 | Not started | - |
 | 4. Subagent Delegation | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-04-27*
-*Last updated: 2026-04-27 - Phase 2 plans revised: added Wave 0 plan for test infrastructure*
+*Last updated: 2026-04-27 - Wave 0 test infrastructure complete*

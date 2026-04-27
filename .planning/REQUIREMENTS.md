@@ -10,16 +10,16 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Core Integration
 
 - [x] **CORE-01**: Skill imports deerflow-harness package successfully
-- [ ] **CORE-02**: Skill validates config.yaml exists and is parseable at initialization
-- [ ] **CORE-03**: Skill validates required credentials are present in config
+- [x] **CORE-02**: Skill validates config.yaml exists and is parseable at initialization
+- [x] **CORE-03**: Skill validates required credentials are present in config
 - [ ] **CORE-04**: Skill creates DeerFlowClient instance with loaded configuration
 - [ ] **CORE-05**: Skill invokes agent and receives response for single user message
 
 ### Configuration
 
-- [ ] **CONF-01**: Skill resolves config.yaml path via DEER_FLOW_CONFIG_PATH or default locations
-- [ ] **CONF-02**: Skill supports environment variable expansion in config values
-- [ ] **CONF-03**: Skill provides actionable error message when config.yaml missing
+- [x] **CONF-01**: Skill resolves config.yaml path via DEER_FLOW_CONFIG_PATH or default locations
+- [x] **CONF-02**: Skill supports environment variable expansion in config values
+- [x] **CONF-03**: Skill provides actionable error message when config.yaml missing
 - [x] **CONF-04**: Skill provides actionable error message when deerflow-harness not importable
 
 ### Tool Calling
@@ -42,7 +42,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **LLM-01**: Skill supports OpenAI models via config.yaml model.use
 - [ ] **LLM-02**: Skill supports Anthropic models via config.yaml model.use
 - [ ] **LLM-03**: Skill supports local models (Ollama) via config.yaml model.use
-- [ ] **LLM-04**: Skill reports clear error when model credentials missing
+- [x] **LLM-04**: Skill reports clear error when model credentials missing
 
 ### Subagent Delegation
 
@@ -102,13 +102,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | CORE-01 | Phase 1 | Complete |
-| CORE-02 | Phase 1 | Pending |
-| CORE-03 | Phase 1 | Pending |
+| CORE-02 | Phase 1 | Complete |
+| CORE-03 | Phase 1 | Complete |
 | CORE-04 | Phase 1 | Pending |
 | CORE-05 | Phase 1 | Pending |
-| CONF-01 | Phase 1 | Pending |
-| CONF-02 | Phase 1 | Pending |
-| CONF-03 | Phase 1 | Pending |
+| CONF-01 | Phase 1 | Complete |
+| CONF-02 | Phase 1 | Complete |
+| CONF-03 | Phase 1 | Complete |
 | CONF-04 | Phase 1 | Complete |
 | TOOL-01 | Phase 3 | Pending |
 | TOOL-02 | Phase 3 | Pending |
@@ -122,7 +122,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LLM-01 | Phase 1 | Pending |
 | LLM-02 | Phase 1 | Pending |
 | LLM-03 | Phase 1 | Pending |
-| LLM-04 | Phase 1 | Pending |
+| LLM-04 | Phase 1 | Complete |
 | SUBA-01 | Phase 4 | Pending |
 | SUBA-02 | Phase 4 | Pending |
 | SUBA-03 | Phase 4 | Pending |

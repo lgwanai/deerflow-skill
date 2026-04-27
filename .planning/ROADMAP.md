@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Core Integration** - Establish minimal working skill that imports deerflow-harness, loads config, and invokes the agent
 - [x] **Phase 2: Streaming and Error Handling** - Add token-by-token streaming responses and actionable error messages for all failure modes
-- [ ] **Phase 3: Tool Registry Exposure** - Expose built-in tools and MCP tools with clear initialization logging
+- [x] **Phase 3: Tool Registry Exposure** - Expose built-in tools and MCP tools with clear initialization logging
 - [ ] **Phase 4: Subagent Delegation** - Enable task_tool for parallel subtask execution with timeout handling
 
 ## Phase Details
@@ -66,8 +66,8 @@ Plans:
 
 Plans:
 - [x] 03-00-PLAN.md - Wave 0: Test stubs and mock fixtures for TOOL-*
-- [ ] 03-01-PLAN.md - Built-in tool exposure (TOOL-01, TOOL-03)
-- [ ] 03-02-PLAN.md - MCP tool integration and logging (TOOL-02, TOOL-04, TOOL-05)
+- [x] 03-01-PLAN.md - Built-in tool exposure (TOOL-01, TOOL-03)
+- [x] 03-02-PLAN.md - MCP tool integration and logging (TOOL-02, TOOL-04, TOOL-05)
 
 ### Phase 4: Subagent Delegation
 **Goal**: Complex tasks decompose into parallel subagents
@@ -93,9 +93,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 |-------|----------------|--------|-----------|
 | 1. Core Integration | 3/3 | Complete | 2026-04-27 |
 | 2. Streaming and Error Handling | 3/3 | Complete | 2026-04-27 |
-| 3. Tool Registry Exposure | 1/3 | In progress | - |
+| 3. Tool Registry Exposure | 3/3 | Complete | 2026-04-27 |
 | 4. Subagent Delegation | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-04-27*
-*Last updated: 2026-04-27 - Phase 3 Wave 0 complete*
+*Last updated: 2026-04-27 - Phase 3 complete*

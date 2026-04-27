@@ -32,6 +32,7 @@ from lib.errors import format_error, format_streaming_error, STREAMING_ERRORS
 from lib.modes import get_mode_config
 from lib.stream import stream_and_print
 from lib.tools import log_available_tools, log_mcp_status, check_mcp_tool_availability
+from lib.subagent import get_subagent_config, log_subagent_config
 
 # For type hints only
 if TYPE_CHECKING:
@@ -192,6 +193,12 @@ def main_with_args(argv: list[str]) -> None:
         mode, prompt = parse_args(argv)
         config_path = resolve_and_validate_config()
         client_kwargs = get_mode_config(mode)
+
+        # Add subagent config if subagent_enabled (SUBA-01, SUBA-02, SUBA-04)
+        if client_kwargs.get("subagent_enabled"):
+            subagent_config = get_subagent_config()
+            client_kwargs.update(subagent_config)
+            log_subagent_config()
 
         # Get DeerFlowClient (will exit if not installed)
         DeerFlowClient = _get_deerflow_client()

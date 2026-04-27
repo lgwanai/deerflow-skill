@@ -81,7 +81,7 @@ Plans:
 **Plans**: 3 plans (including Wave 0 infrastructure)
 
 Plans:
-- [ ] 04-00-PLAN.md - Wave 0: Test stubs for SUBA-* requirements
+- [x] 04-00-PLAN.md - Wave 0: Test stubs for SUBA-* requirements
 - [ ] 04-01-PLAN.md - Subagent configuration (timeout, concurrency, logging)
 - [ ] 04-02-PLAN.md - Timeout error handling with agent identification
 
@@ -95,7 +95,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. Core Integration | 3/3 | Complete | 2026-04-27 |
 | 2. Streaming and Error Handling | 3/3 | Complete | 2026-04-27 |
 | 3. Tool Registry Exposure | 3/3 | Complete | 2026-04-27 |
-| 4. Subagent Delegation | 0/3 | Not started | - |
+| 4. Subagent Delegation | 1/3 | In progress | 2026-04-27 |
 
 ---
 *Roadmap created: 2026-04-27*

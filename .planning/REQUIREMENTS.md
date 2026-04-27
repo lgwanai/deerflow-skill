@@ -46,10 +46,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Subagent Delegation
 
-- [ ] **SUBA-01**: Skill enables task_tool for subagent delegation
-- [ ] **SUBA-02**: Skill configures subagent timeout with clear default (900s)
-- [ ] **SUBA-03**: Skill reports which subagent timed out on timeout error
-- [ ] **SUBA-04**: Skill exposes MAX_CONCURRENT_SUBAGENTS limit
+- [x] **SUBA-01**: Skill enables task_tool for subagent delegation
+- [x] **SUBA-02**: Skill configures subagent timeout with clear default (900s)
+- [x] **SUBA-03**: Skill reports which subagent timed out on timeout error
+- [x] **SUBA-04**: Skill exposes MAX_CONCURRENT_SUBAGENTS limit
 
 ### Error Handling
 
@@ -123,10 +123,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LLM-02 | Phase 1 | Complete |
 | LLM-03 | Phase 1 | Complete |
 | LLM-04 | Phase 1 | Complete |
-| SUBA-01 | Phase 4 | Pending |
-| SUBA-02 | Phase 4 | Pending |
-| SUBA-03 | Phase 4 | Pending |
-| SUBA-04 | Phase 4 | Pending |
+| SUBA-01 | Phase 4 | Complete |
+| SUBA-02 | Phase 4 | Complete |
+| SUBA-03 | Phase 4 | Complete |
+| SUBA-04 | Phase 4 | Complete |
 | ERRR-01 | Phase 2 | Complete |
 | ERRR-02 | Phase 2 | Complete |
 | ERRR-03 | Phase 2 | Complete |

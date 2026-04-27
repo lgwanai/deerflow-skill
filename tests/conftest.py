@@ -145,3 +145,92 @@ def retry_stream(mock_stream_event):
         ("messages-tuple", {"content": " after retry"}),
         ("end", {}),
     ]
+
+
+# =============================================================================
+# Phase 3: Tool Registry Exposure fixtures
+# =============================================================================
+
+@pytest.fixture
+def mock_tool():
+    """Factory fixture to create BaseTool-like mock objects.
+
+    Args:
+        name: Tool name (e.g., "bash", "read", "mcp__filesystem__read")
+        description: Tool description
+
+    Returns:
+        Mock object with name and description attributes
+    """
+    def _factory(name: str, description: str = "Test tool") -> Mock:
+        tool = Mock()
+        tool.name = name
+        tool.description = description
+        return tool
+    return _factory
+
+
+@pytest.fixture
+def mock_get_available_tools(mock_tool):
+    """Mock for deerflow.tools.get_available_tools function.
+
+    Args:
+        tools: List of tool names to return
+        include_builtins: If True, include bash/read/write/str_replace
+
+    Returns:
+        Mock function returning list of tools
+    """
+    def _factory(tools: list[str] | None = None, include_builtins: bool = True):
+        result = []
+        if include_builtins:
+            result.extend([
+                mock_tool("bash", "Execute bash commands"),
+                mock_tool("read", "Read file contents"),
+                mock_tool("write", "Write to file"),
+                mock_tool("str_replace", "Replace text in file"),
+            ])
+        if tools:
+            result.extend([mock_tool(name) for name in tools])
+        return result
+    return _factory
+
+
+@pytest.fixture
+def mock_mcp_tools(mock_tool):
+    """Mock for deerflow.mcp.cache.get_cached_mcp_tools function.
+
+    Args:
+        server_tools: Dict of {server_name: [tool_names]}
+
+    Returns:
+        Mock function returning list of MCP-prefixed tools
+    """
+    def _factory(server_tools: dict[str, list[str]] | None = None):
+        if not server_tools:
+            return []
+
+        result = []
+        for server, tools in server_tools.items():
+            for tool_name in tools:
+                # MCP tools are prefixed: mcp__{server}__{tool}
+                result.append(mock_tool(f"mcp__{server}__{tool_name}"))
+        return result
+    return _factory
+
+
+@pytest.fixture
+def mock_extensions_config():
+    """Mock for deerflow.config.extensions_config.ExtensionsConfig.
+
+    Args:
+        enabled_servers: Dict of {server_name: {"type": "stdio"|"sse", "enabled": True}}
+
+    Returns:
+        Mock ExtensionsConfig with get_enabled_mcp_servers method
+    """
+    def _factory(enabled_servers: dict[str, dict] | None = None):
+        config = Mock()
+        config.get_enabled_mcp_servers.return_value = enabled_servers or {}
+        return config
+    return _factory

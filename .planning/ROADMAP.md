@@ -13,7 +13,7 @@ Build a Claude Code skill that embeds deer-flow's production-grade agent orchest
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Core Integration** - Establish minimal working skill that imports deerflow-harness, loads config, and invokes the agent
-- [ ] **Phase 2: Streaming and Error Handling** - Add token-by-token streaming responses and actionable error messages for all failure modes
+- [x] **Phase 2: Streaming and Error Handling** - Add token-by-token streaming responses and actionable error messages for all failure modes
 - [ ] **Phase 3: Tool Registry Exposure** - Expose built-in tools and MCP tools with clear initialization logging
 - [ ] **Phase 4: Subagent Delegation** - Enable task_tool for parallel subtask execution with timeout handling
 
@@ -50,8 +50,8 @@ Plans:
 
 Plans:
 - [x] 02-00-PLAN.md - Wave 0: Test stubs and mock fixtures for STRM-* and ERRR-*
-- [ ] 02-01-PLAN.md - Stream event handler with real-time token output and tool progress
-- [ ] 02-02-PLAN.md - Error handling wrapper with GraphRecursionError and LLM error guidance
+- [x] 02-01-PLAN.md - Stream event handler with real-time token output and tool progress
+- [x] 02-02-PLAN.md - Error handling wrapper with GraphRecursionError and LLM error guidance
 
 ### Phase 3: Tool Registry Exposure
 **Goal**: Full tool ecosystem available including MCP tools
@@ -62,11 +62,12 @@ Plans:
   2. User can use tools from configured MCP servers
   3. User sees clear log of which MCP tools loaded successfully
   4. User is warned when expected MCP tools are unavailable
-**Plans**: TBD
+**Plans**: 3 plans (including Wave 0 infrastructure)
 
 Plans:
-- [ ] 03-01-PLAN.md - Built-in tool exposure
-- [ ] 03-02-PLAN.md - MCP tool integration and logging
+- [ ] 03-00-PLAN.md - Wave 0: Test stubs and mock fixtures for TOOL-*
+- [ ] 03-01-PLAN.md - Built-in tool exposure (TOOL-01, TOOL-03)
+- [ ] 03-02-PLAN.md - MCP tool integration and logging (TOOL-02, TOOL-04, TOOL-05)
 
 ### Phase 4: Subagent Delegation
 **Goal**: Complex tasks decompose into parallel subagents
@@ -91,10 +92,10 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Core Integration | 3/3 | Complete | 2026-04-27 |
-| 2. Streaming and Error Handling | 1/3 | In progress | - |
-| 3. Tool Registry Exposure | 0/2 | Not started | - |
+| 2. Streaming and Error Handling | 3/3 | Complete | 2026-04-27 |
+| 3. Tool Registry Exposure | 0/3 | Not started | - |
 | 4. Subagent Delegation | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-04-27*
-*Last updated: 2026-04-27 - Wave 0 test infrastructure complete*
+*Last updated: 2026-04-27 - Phase 3 planning complete*

@@ -70,7 +70,7 @@ Plans:
 - [x] 03-02-PLAN.md - MCP tool integration and logging (TOOL-02, TOOL-04, TOOL-05)
 
 ### Phase 4: Subagent Delegation
-**Goal**: Complex tasks decompose into parallel subagents
+**Goal**: Complex tasks decompose into parallel subagents with clear timeout feedback
 **Depends on**: Phase 3
 **Requirements**: SUBA-01, SUBA-02, SUBA-03, SUBA-04
 **Success Criteria** (what must be TRUE):
@@ -78,11 +78,12 @@ Plans:
   2. User sees which subagent timed out when timeout occurs
   3. User can configure concurrent subagent limit
   4. Subagent timeout has clear default behavior (900s)
-**Plans**: TBD
+**Plans**: 3 plans (including Wave 0 infrastructure)
 
 Plans:
-- [ ] 04-01-PLAN.md - Subagent delegation configuration
-- [ ] 04-02-PLAN.md - Timeout handling and feedback
+- [ ] 04-00-PLAN.md - Wave 0: Test stubs for SUBA-* requirements
+- [ ] 04-01-PLAN.md - Subagent configuration (timeout, concurrency, logging)
+- [ ] 04-02-PLAN.md - Timeout error handling with agent identification
 
 ## Progress
 
@@ -94,8 +95,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. Core Integration | 3/3 | Complete | 2026-04-27 |
 | 2. Streaming and Error Handling | 3/3 | Complete | 2026-04-27 |
 | 3. Tool Registry Exposure | 3/3 | Complete | 2026-04-27 |
-| 4. Subagent Delegation | 0/2 | Not started | - |
+| 4. Subagent Delegation | 0/3 | Not started | - |
 
 ---
 *Roadmap created: 2026-04-27*
-*Last updated: 2026-04-27 - Phase 3 complete*
+*Last updated: 2026-04-28 - Phase 4 plans created*

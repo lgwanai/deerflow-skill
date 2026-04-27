@@ -59,3 +59,24 @@ class TestToolLoggingIntegration:
 
                 # Verify logging was called
                 mock_log.assert_called_once()
+
+    def test_main_with_args_calls_log_tools(self):
+        """Verify main_with_args calls _log_tools after client creation."""
+        from skill import main_with_args
+
+        mock_client_instance = MagicMock()
+        mock_client_instance.stream.return_value = iter([])
+
+        with patch('skill.resolve_and_validate_config') as mock_config:
+            with patch('skill.get_mode_config') as mock_mode:
+                with patch('skill._get_deerflow_client') as mock_client_class:
+                    with patch('skill._log_tools') as mock_log_tools:
+                        with patch('skill.stream_with_error_handling'):
+                            mock_config.return_value = "/mock/config.yaml"
+                            mock_mode.return_value = {"model_name": "flash"}
+                            mock_client_class.return_value.return_value = mock_client_instance
+
+                            main_with_args(['test prompt'])
+
+                            # Verify _log_tools was called with client_kwargs
+                            mock_log_tools.assert_called_once_with({"model_name": "flash"})

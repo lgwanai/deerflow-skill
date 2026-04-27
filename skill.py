@@ -199,6 +199,9 @@ def main_with_args(argv: list[str]) -> None:
         # Create client and invoke agent with streaming
         client = DeerFlowClient(config_path=str(config_path), **client_kwargs)
 
+        # Log available tools and MCP status (TOOL-01, TOOL-04, TOOL-05)
+        _log_tools(client_kwargs)
+
         # Generate thread_id (stateless by default)
         thread_id = str(uuid.uuid4())
 

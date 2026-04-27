@@ -29,10 +29,20 @@ def stream_and_print(
     - Tool completion notifications: "[Tool {name} completed]" (to stderr)
     - LLM retry progress: "[LLM retry {attempt}/{max}, waiting {wait}s]" (to stderr)
 
-    Tool execution errors are handled gracefully:
+    Tool execution errors are handled gracefully (ERRR-02):
     - Prints warning to stderr: "[Tool {name} error: {message}]"
     - Continues processing subsequent events
     - Does NOT raise exception for tool errors
+
+    Error propagation behavior:
+    - GeneratorExit: Propagates naturally (user interrupt via Ctrl+C)
+    - Other exceptions: Propagate to caller (handled by skill.py)
+    - Partial output: Preserved in stdout before exception
+
+    Note: This function does NOT wrap the stream loop in try/except.
+    Exceptions propagate naturally for proper handling by the caller.
+    The deerflow-harness ToolErrorHandlingMiddleware handles tool errors
+    internally and emits error ToolMessages, which we detect and format.
 
     Args:
         client: DeerFlowClient instance with stream() method.

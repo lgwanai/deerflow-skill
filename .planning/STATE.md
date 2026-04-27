@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 03-tool-registry-exposure-03-02-PLAN.md
-last_updated: "2026-04-27T13:26:00Z"
+stopped_at: Completed 03-tool-registry-exposure-03-04-PLAN.md
+last_updated: "2026-04-27T14:35:32.216Z"
 last_activity: "2026-04-27 — Phase 3 complete: Tool Registry Exposure"
 progress:
   total_phases: 4
@@ -90,6 +90,7 @@ Recent decisions affecting current work:
 - [Phase 03-tool-registry-exposure P01]: Deduplication preserves first occurrence order
 - [Phase 03-tool-registry-exposure P02]: Print MCP status to stderr for visibility (matches Phase 2 patterns)
 - [Phase 03-tool-registry-exposure P02]: Warning messages returned as list for caller flexibility
+- [Phase 03]: Runtime import of deerflow modules inside _log_tools for graceful degradation
 
 ### Pending Todos
 
@@ -102,6 +103,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-27T13:26:00Z
-Stopped at: Completed 03-tool-registry-exposure-03-02-PLAN.md
+Last session: 2026-04-27T14:35:32.214Z
+Stopped at: Completed 03-tool-registry-exposure-03-04-PLAN.md
 Resume file: None

@@ -109,10 +109,27 @@ class TestBuiltinTools:
 class TestMCPTools:
     """Tests for TOOL-02, TOOL-04, TOOL-05: MCP tool handling."""
 
-    @pytest.mark.skip(reason="Wave 0 stub - implementation pending")
-    def test_mcp_tools_loaded(self):
-        """TOOL-02: Verify MCP tools loaded from extensions_config.json."""
-        pass
+    def test_mcp_tools_loaded(self, mock_mcp_tools):
+        """TOOL-02: Verify MCP tools loaded from extensions_config.json.
+
+        Expected: MCP tools are visible with server-prefixed names.
+        """
+        from lib.tools import get_mcp_tool_names
+
+        mcp_tools = mock_mcp_tools(server_tools={
+            "filesystem": ["read", "write"],
+            "github": ["search", "create_issue"]
+        })
+
+        names = get_mcp_tool_names(mcp_tools)
+
+        # Should have MCP-prefixed names
+        assert "mcp__filesystem__read" in names
+        assert "mcp__filesystem__write" in names
+        assert "mcp__github__search" in names
+        assert "mcp__github__create_issue" in names
+        # Total 4 tools
+        assert len(names) == 4
 
     def test_mcp_status_logging(self, mock_mcp_tools, capsys):
         """TOOL-04: Verify MCP tool initialization is logged clearly.

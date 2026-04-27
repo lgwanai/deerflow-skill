@@ -45,6 +45,20 @@ def get_unique_tool_names(tools: list["BaseTool"]) -> list[str]:
     return names
 
 
+def get_mcp_tool_names(mcp_tools: list["BaseTool"]) -> list[str]:
+    """Get names of MCP tools (TOOL-02).
+
+    MCP tools are prefixed with server name: "mcp__{server}__{tool}"
+
+    Args:
+        mcp_tools: List of MCP tools from get_cached_mcp_tools().
+
+    Returns:
+        List of MCP tool names.
+    """
+    return [tool.name for tool in mcp_tools]
+
+
 def log_mcp_status(
     servers: dict[str, dict],
     mcp_tools: list["BaseTool"]

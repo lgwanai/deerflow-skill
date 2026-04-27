@@ -115,6 +115,7 @@ def stream_with_error_handling(
     Handles:
     - GraphRecursionError: Shows actionable guidance
     - KeyboardInterrupt: Clean interrupt with exit code 130
+    - Subagent timeout: Shows agent name and resolution (SUBA-03)
     - Generic errors: Formatted with format_streaming_error
 
     Args:
@@ -128,6 +129,8 @@ def stream_with_error_handling(
     Raises:
         SystemExit: On any error (exit codes: 1 for error, 130 for interrupt).
     """
+    import os
+
     try:
         # Import GraphRecursionError at runtime to avoid import dependency
         from langgraph.errors import GraphRecursionError
@@ -136,6 +139,12 @@ def stream_with_error_handling(
         class GraphRecursionError(Exception):
             """Fallback GraphRecursionError if langgraph not installed."""
             pass
+
+    from lib.subagent import (
+        is_subagent_timeout,
+        format_subagent_timeout_error,
+        DEFAULT_SUBAGENT_TIMEOUT
+    )
 
     try:
         return stream_and_print(client, prompt, thread_id)
@@ -149,6 +158,13 @@ def stream_with_error_handling(
         sys.exit(130)
 
     except Exception as e:
+        # Check for subagent timeout (SUBA-03)
+        if is_subagent_timeout(e):
+            timeout = int(os.getenv("DEER_FLOW_SUBAGENT_TIMEOUT", DEFAULT_SUBAGENT_TIMEOUT))
+            print(format_subagent_timeout_error(e, timeout), file=sys.stderr)
+            sys.exit(1)
+
+        # Use general streaming error formatter
         print(format_streaming_error(e), file=sys.stderr)
         sys.exit(1)
 

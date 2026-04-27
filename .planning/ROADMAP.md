@@ -29,12 +29,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. User receives clear error when deerflow-harness is not installed
   4. User can use any configured LLM provider (OpenAI, Anthropic, Ollama)
   5. User sees actionable error message when model credentials are missing
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: Core skill structure and deerflow-harness integration
-- [ ] 01-02: Configuration loading and validation
-- [ ] 01-03: Multi-provider LLM support
+- [ ] 01-01-PLAN.md - Core skill structure (SKILL.md, pyproject.toml) and deerflow-harness dependency
+- [ ] 01-02-PLAN.md - Configuration loading, validation, and actionable error messages
+- [ ] 01-03-PLAN.md - Mode presets, skill.py entry point, and multi-provider LLM invocation
 
 ### Phase 2: Streaming and Error Handling
 **Goal**: Modern UX with streaming responses and actionable error messages
@@ -49,8 +49,8 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 02-01: Streaming response implementation
-- [ ] 02-02: Error handling and user messaging
+- [ ] 02-01-PLAN.md - Streaming response implementation
+- [ ] 02-02-PLAN.md - Error handling and user messaging
 
 ### Phase 3: Tool Registry Exposure
 **Goal**: Full tool ecosystem available including MCP tools
@@ -64,8 +64,8 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 03-01: Built-in tool exposure
-- [ ] 03-02: MCP tool integration and logging
+- [ ] 03-01-PLAN.md - Built-in tool exposure
+- [ ] 03-02-PLAN.md - MCP tool integration and logging
 
 ### Phase 4: Subagent Delegation
 **Goal**: Complex tasks decompose into parallel subagents
@@ -79,8 +79,8 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 04-01: Subagent delegation configuration
-- [ ] 04-02: Timeout handling and feedback
+- [ ] 04-01-PLAN.md - Subagent delegation configuration
+- [ ] 04-02-PLAN.md - Timeout handling and feedback
 
 ## Progress
 
@@ -89,10 +89,11 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Integration | 0/3 | Not started | - |
+| 1. Core Integration | 0/3 | Ready to execute | - |
 | 2. Streaming and Error Handling | 0/2 | Not started | - |
 | 3. Tool Registry Exposure | 0/2 | Not started | - |
 | 4. Subagent Delegation | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-04-27*
+*Last updated: 2026-04-27 - Phase 1 plans created*

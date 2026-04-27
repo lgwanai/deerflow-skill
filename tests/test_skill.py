@@ -305,3 +305,168 @@ default_model: gpt-4
         with pytest.raises(SystemExit) as exc_info:
             skill.main_with_args(["test prompt"])
         assert exc_info.value.code == 130
+
+
+class TestToolErrorContinuation:
+    """Tests for ERRR-02: Tool execution errors don't crash the skill."""
+
+    def test_tool_error_continues_run(self, mock_deerflow_client, tmp_path, monkeypatch, capsys):
+        """Test 1: Tool execution errors don't crash the skill."""
+        import skill
+
+        config_content = """
+models:
+  - name: gpt-4
+    use: langchain_openai:ChatOpenAI
+    api_key: test-key
+default_model: gpt-4
+"""
+        config_path = tmp_path / "config.yaml"
+        config_path.write_text(config_content)
+
+        # Event sequence: AI message -> tool call -> tool error -> AI message -> end
+        events = [
+            ("messages-tuple", {
+                "type": "ai",
+                "content": "",
+                "id": "msg-1",
+                "tool_calls": [{"name": "risky_tool", "args": {}, "id": "tc-1"}]
+            }),
+            ("messages-tuple", {
+                "type": "tool",
+                "content": "Error: Permission denied",
+                "name": "risky_tool",
+                "tool_call_id": "tc-1",
+                "id": "tool-msg-1",
+                "error": True
+            }),
+            ("messages-tuple", {"type": "ai", "content": "I encountered an error but continued.", "id": "msg-2"}),
+            ("end", {}),
+        ]
+
+        mock_client = mock_deerflow_client(events=events)
+        monkeypatch.setattr(skill, "_get_deerflow_client", lambda: lambda **kwargs: mock_client)
+        monkeypatch.chdir(tmp_path)
+        monkeypatch.delenv("DEER_FLOW_CONFIG_PATH", raising=False)
+
+        # Should NOT raise SystemExit - skill continues after tool error
+        try:
+            skill.main_with_args(["test prompt"])
+        except SystemExit as e:
+            # Should exit with code 0 (success), not error
+            assert e.code == 0 or e.code is None
+
+        captured = capsys.readouterr()
+        # Should show tool error in stderr
+        assert "error" in captured.err.lower() or "risky_tool" in captured.err.lower()
+        # Should continue and show final response
+        assert "continued" in captured.out.lower()
+
+    def test_skill_continues_after_tool_error(self, mock_deerflow_client, tmp_path, monkeypatch, capsys):
+        """Test 2: Skill continues after tool error."""
+        import skill
+
+        config_content = """
+models:
+  - name: gpt-4
+    use: langchain_openai:ChatOpenAI
+    api_key: test-key
+default_model: gpt-4
+"""
+        config_path = tmp_path / "config.yaml"
+        config_path.write_text(config_content)
+
+        # Multiple tool errors, skill continues
+        events = [
+            ("messages-tuple", {
+                "type": "ai",
+                "content": "",
+                "id": "msg-1",
+                "tool_calls": [{"name": "tool1", "args": {}, "id": "tc-1"}]
+            }),
+            ("messages-tuple", {
+                "type": "tool",
+                "content": "Error 1",
+                "name": "tool1",
+                "id": "tool-msg-1",
+                "error": True
+            }),
+            ("messages-tuple", {
+                "type": "ai",
+                "content": "",
+                "id": "msg-2",
+                "tool_calls": [{"name": "tool2", "args": {}, "id": "tc-2"}]
+            }),
+            ("messages-tuple", {
+                "type": "tool",
+                "content": "Error 2",
+                "name": "tool2",
+                "id": "tool-msg-2",
+                "error": True
+            }),
+            ("messages-tuple", {"type": "ai", "content": "All tools failed but I have a fallback answer.", "id": "msg-3"}),
+            ("end", {}),
+        ]
+
+        mock_client = mock_deerflow_client(events=events)
+        monkeypatch.setattr(skill, "_get_deerflow_client", lambda: lambda **kwargs: mock_client)
+        monkeypatch.chdir(tmp_path)
+        monkeypatch.delenv("DEER_FLOW_CONFIG_PATH", raising=False)
+
+        try:
+            skill.main_with_args(["test prompt"])
+        except SystemExit as e:
+            assert e.code == 0 or e.code is None
+
+        captured = capsys.readouterr()
+        # Should show both tool errors
+        assert "tool1" in captured.err.lower() or "tool1" in captured.out.lower()
+        assert "tool2" in captured.err.lower() or "tool2" in captured.out.lower()
+        # Should still produce final answer
+        assert "fallback" in captured.out.lower()
+
+    def test_tool_error_logged_to_stderr(self, mock_deerflow_client, tmp_path, monkeypatch, capsys):
+        """Test 3: Tool error logged to stderr."""
+        import skill
+
+        config_content = """
+models:
+  - name: gpt-4
+    use: langchain_openai:ChatOpenAI
+    api_key: test-key
+default_model: gpt-4
+"""
+        config_path = tmp_path / "config.yaml"
+        config_path.write_text(config_content)
+
+        events = [
+            ("messages-tuple", {
+                "type": "ai",
+                "content": "",
+                "id": "msg-1",
+                "tool_calls": [{"name": "broken_tool", "args": {}, "id": "tc-1"}]
+            }),
+            ("messages-tuple", {
+                "type": "tool",
+                "content": "Permission denied",
+                "name": "broken_tool",
+                "id": "tool-msg-1",
+                "error": True
+            }),
+            ("messages-tuple", {"type": "ai", "content": "Done", "id": "msg-2"}),
+            ("end", {}),
+        ]
+
+        mock_client = mock_deerflow_client(events=events)
+        monkeypatch.setattr(skill, "_get_deerflow_client", lambda: lambda **kwargs: mock_client)
+        monkeypatch.chdir(tmp_path)
+        monkeypatch.delenv("DEER_FLOW_CONFIG_PATH", raising=False)
+
+        try:
+            skill.main_with_args(["test prompt"])
+        except SystemExit:
+            pass
+
+        captured = capsys.readouterr()
+        # Tool error should be in stderr (not stdout)
+        assert "broken_tool" in captured.err.lower() or "error" in captured.err.lower()

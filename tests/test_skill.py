@@ -119,3 +119,189 @@ class TestModeFlags:
 
         mode, prompt = skill.parse_args(["--unknown", "test"])
         assert mode == "unknown"
+
+
+class TestStreamingIntegration:
+    """Tests for streaming integration in skill.py."""
+
+    def test_main_with_args_uses_stream_and_print(self, mock_deerflow_client, tmp_path, monkeypatch, capsys):
+        """Test 1: main_with_args uses stream_and_print instead of chat."""
+        import skill
+        from pathlib import Path
+
+        # Create a valid config.yaml
+        config_content = """
+models:
+  - name: gpt-4
+    use: langchain_openai:ChatOpenAI
+    api_key: test-key
+default_model: gpt-4
+"""
+        config_path = tmp_path / "config.yaml"
+        config_path.write_text(config_content)
+
+        # Create events for streaming
+        events = [
+            ("messages-tuple", {"type": "ai", "content": "Hello ", "id": "msg-1"}),
+            ("messages-tuple", {"type": "ai", "content": "world!", "id": "msg-1"}),
+            ("end", {}),
+        ]
+
+        # Mock the deerflow client
+        mock_client = mock_deerflow_client(events=events)
+
+        # Patch to use our mock
+        monkeypatch.setattr(skill, "_get_deerflow_client", lambda: lambda **kwargs: mock_client)
+        monkeypatch.chdir(tmp_path)
+        monkeypatch.delenv("DEER_FLOW_CONFIG_PATH", raising=False)
+
+        # Call main_with_args
+        try:
+            skill.main_with_args(["test prompt"])
+        except SystemExit as e:
+            # Normal exit
+            pass
+
+        captured = capsys.readouterr()
+        # Should have streamed output
+        assert "Hello" in captured.out or "Hello" in captured.err
+        # chat() should not have been called
+        mock_client.chat.assert_not_called()
+        # stream() should have been called
+        mock_client.stream.assert_called_once()
+
+    def test_graph_recursion_error_shows_clear_message(self, mock_deerflow_client, tmp_path, monkeypatch, capsys):
+        """Test 2: GraphRecursionError caught and shows clear message."""
+        import skill
+
+        # Create a valid config
+        config_content = """
+models:
+  - name: gpt-4
+    use: langchain_openai:ChatOpenAI
+    api_key: test-key
+default_model: gpt-4
+"""
+        config_path = tmp_path / "config.yaml"
+        config_path.write_text(config_content)
+
+        # Create a mock GraphRecursionError
+        class MockGraphRecursionError(Exception):
+            pass
+
+        events = [
+            ("messages-tuple", {"type": "ai", "content": "Partial", "id": "msg-1"}),
+        ]
+        mock_client = mock_deerflow_client(events=events, error=MockGraphRecursionError("Recursion limit exceeded"))
+
+        monkeypatch.setattr(skill, "_get_deerflow_client", lambda: lambda **kwargs: mock_client)
+        monkeypatch.chdir(tmp_path)
+        monkeypatch.delenv("DEER_FLOW_CONFIG_PATH", raising=False)
+
+        # Should exit with error
+        with pytest.raises(SystemExit) as exc_info:
+            skill.main_with_args(["test prompt"])
+
+        # Exit code should be 1
+        assert exc_info.value.code == 1
+
+        captured = capsys.readouterr()
+        # Should show actionable message about recursion
+        assert "recursion" in captured.err.lower() or "complex" in captured.err.lower()
+
+    def test_keyboard_interrupt_shows_interrupt_message(self, mock_deerflow_client, tmp_path, monkeypatch, capsys):
+        """Test 3: KeyboardInterrupt caught and shows interrupt message."""
+        import skill
+
+        config_content = """
+models:
+  - name: gpt-4
+    use: langchain_openai:ChatOpenAI
+    api_key: test-key
+default_model: gpt-4
+"""
+        config_path = tmp_path / "config.yaml"
+        config_path.write_text(config_content)
+
+        events = [
+            ("messages-tuple", {"type": "ai", "content": "Partial", "id": "msg-1"}),
+        ]
+        mock_client = mock_deerflow_client(events=events, error=KeyboardInterrupt())
+
+        monkeypatch.setattr(skill, "_get_deerflow_client", lambda: lambda **kwargs: mock_client)
+        monkeypatch.chdir(tmp_path)
+        monkeypatch.delenv("DEER_FLOW_CONFIG_PATH", raising=False)
+
+        with pytest.raises(SystemExit) as exc_info:
+            skill.main_with_args(["test prompt"])
+
+        # Exit code should be 130 (128 + SIGINT=2)
+        assert exc_info.value.code == 130
+
+        captured = capsys.readouterr()
+        assert "interrupt" in captured.err.lower()
+
+    def test_generic_exception_formatted_with_format_streaming_error(self, mock_deerflow_client, tmp_path, monkeypatch, capsys):
+        """Test 4: Generic exceptions formatted with format_streaming_error."""
+        import skill
+
+        config_content = """
+models:
+  - name: gpt-4
+    use: langchain_openai:ChatOpenAI
+    api_key: test-key
+default_model: gpt-4
+"""
+        config_path = tmp_path / "config.yaml"
+        config_path.write_text(config_content)
+
+        events = [
+            ("messages-tuple", {"type": "ai", "content": "Partial", "id": "msg-1"}),
+        ]
+        mock_client = mock_deerflow_client(events=events, error=TimeoutError("Request timed out"))
+
+        monkeypatch.setattr(skill, "_get_deerflow_client", lambda: lambda **kwargs: mock_client)
+        monkeypatch.chdir(tmp_path)
+        monkeypatch.delenv("DEER_FLOW_CONFIG_PATH", raising=False)
+
+        with pytest.raises(SystemExit) as exc_info:
+            skill.main_with_args(["test prompt"])
+
+        assert exc_info.value.code == 1
+
+        captured = capsys.readouterr()
+        # Should show formatted timeout message
+        assert "timeout" in captured.err.lower() or "long" in captured.err.lower()
+
+    def test_exit_codes_correct(self, mock_deerflow_client, tmp_path, monkeypatch):
+        """Test 5: Exit code is 1 on error, 130 on interrupt."""
+        import skill
+
+        config_content = """
+models:
+  - name: gpt-4
+    use: langchain_openai:ChatOpenAI
+    api_key: test-key
+default_model: gpt-4
+"""
+        config_path = tmp_path / "config.yaml"
+        config_path.write_text(config_content)
+
+        # Test error exit code (1)
+        events = []
+        mock_client = mock_deerflow_client(events=events, error=ValueError("Test error"))
+        monkeypatch.setattr(skill, "_get_deerflow_client", lambda: lambda **kwargs: mock_client)
+        monkeypatch.chdir(tmp_path)
+        monkeypatch.delenv("DEER_FLOW_CONFIG_PATH", raising=False)
+
+        with pytest.raises(SystemExit) as exc_info:
+            skill.main_with_args(["test prompt"])
+        assert exc_info.value.code == 1
+
+        # Test interrupt exit code (130)
+        mock_client = mock_deerflow_client(events=events, error=KeyboardInterrupt())
+        monkeypatch.setattr(skill, "_get_deerflow_client", lambda: lambda **kwargs: mock_client)
+
+        with pytest.raises(SystemExit) as exc_info:
+            skill.main_with_args(["test prompt"])
+        assert exc_info.value.code == 130

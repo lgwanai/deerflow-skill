@@ -7,7 +7,7 @@ directly from Claude Code. The skill:
 1. Parses CLI arguments for mode preset and prompt
 2. Resolves and validates configuration
 3. Creates DeerFlowClient with mode settings
-4. Invokes the agent and prints the response
+4. Invokes the agent with streaming and prints the response
 
 Usage:
     python skill.py "your prompt here"
@@ -19,6 +19,7 @@ For configuration help, see config.example.yaml.
 """
 
 import sys
+import uuid
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -27,8 +28,9 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 # Import local modules (always available)
 from lib.config import resolve_and_validate_config
-from lib.errors import format_error
+from lib.errors import format_error, format_streaming_error, STREAMING_ERRORS
 from lib.modes import get_mode_config
+from lib.stream import stream_and_print
 
 # For type hints only
 if TYPE_CHECKING:
@@ -57,6 +59,54 @@ For local development, you can also install from workspace:
 """,
             file=sys.stderr,
         )
+        sys.exit(1)
+
+
+def stream_with_error_handling(
+    client: "DeerFlowClient",
+    prompt: str,
+    thread_id: str
+) -> str:
+    """Stream agent response with comprehensive error handling.
+
+    Handles:
+    - GraphRecursionError: Shows actionable guidance
+    - KeyboardInterrupt: Clean interrupt with exit code 130
+    - Generic errors: Formatted with format_streaming_error
+
+    Args:
+        client: DeerFlowClient instance.
+        prompt: User prompt to send to the agent.
+        thread_id: Thread ID for isolation.
+
+    Returns:
+        The final accumulated text response from the AI.
+
+    Raises:
+        SystemExit: On any error (exit codes: 1 for error, 130 for interrupt).
+    """
+    try:
+        # Import GraphRecursionError at runtime to avoid import dependency
+        from langgraph.errors import GraphRecursionError
+    except ImportError:
+        # If langgraph not available, create a dummy class for detection
+        class GraphRecursionError(Exception):
+            """Fallback GraphRecursionError if langgraph not installed."""
+            pass
+
+    try:
+        return stream_and_print(client, prompt, thread_id)
+
+    except GraphRecursionError:
+        print(STREAMING_ERRORS["recursion"], file=sys.stderr)
+        sys.exit(1)
+
+    except KeyboardInterrupt:
+        print("\n[Interrupted]", file=sys.stderr)
+        sys.exit(130)
+
+    except Exception as e:
+        print(format_streaming_error(e), file=sys.stderr)
         sys.exit(1)
 
 
@@ -104,10 +154,17 @@ def main_with_args(argv: list[str]) -> None:
         # Get DeerFlowClient (will exit if not installed)
         DeerFlowClient = _get_deerflow_client()
 
-        # Create client and invoke agent
+        # Create client and invoke agent with streaming
         client = DeerFlowClient(config_path=str(config_path), **client_kwargs)
-        response = client.chat(prompt)
-        print(response)
+
+        # Generate thread_id (stateless by default)
+        thread_id = str(uuid.uuid4())
+
+        # Stream with error handling
+        stream_with_error_handling(client, prompt, thread_id)
+
+        # Print newline after streaming completes
+        print()
 
     except Exception as e:
         print(format_error(e), file=sys.stderr)

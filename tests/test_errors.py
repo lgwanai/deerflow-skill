@@ -122,3 +122,73 @@ class TestErrorDetection:
 
         # Should mention config parsing issue
         assert "parse" in result.lower() or "yaml" in result.lower() or "config" in result.lower()
+
+
+class TestStreamingErrorMessages:
+    """Tests for streaming-specific error messages (ERRR-01, ERRR-02, ERRR-03, ERRR-04)."""
+
+    @pytest.mark.skip(reason="Wave 0 stub - implementation pending")
+    def test_recursion_limit_message(self):
+        """ERRR-01: GraphRecursionError shows clear message.
+
+        Verify that:
+        - Error message explains recursion limit hit
+        - Guidance provided to reduce complexity or adjust limit
+        - Message is actionable for user
+        """
+        pass
+
+    @pytest.mark.skip(reason="Wave 0 stub - implementation pending")
+    def test_llm_timeout_message(self):
+        """ERRR-02: Timeout errors show guidance.
+
+        Verify that:
+        - Error explains request timed out
+        - Suggestions for retry or timeout adjustment
+        - Clear distinction from network errors
+        """
+        pass
+
+    @pytest.mark.skip(reason="Wave 0 stub - implementation pending")
+    def test_llm_quota_message(self):
+        """ERRR-02: Quota errors show dashboard links.
+
+        Verify that:
+        - Error indicates rate limit or quota exceeded
+        - Link to provider dashboard if available
+        - Suggestions for wait time or plan upgrade
+        """
+        pass
+
+    @pytest.mark.skip(reason="Wave 0 stub - implementation pending")
+    def test_llm_auth_message(self):
+        """ERRR-02: Auth errors show API key guidance.
+
+        Verify that:
+        - Error indicates authentication failure
+        - Shows which env var needs updating
+        - Links to API key management page
+        """
+        pass
+
+    @pytest.mark.skip(reason="Wave 0 stub - implementation pending")
+    def test_stateless_session_info(self):
+        """ERRR-03: Session behavior documented.
+
+        Verify that:
+        - Error explains stateless nature of session
+        - User understands no conversation history
+        - Guidance on enabling stateful mode if available
+        """
+        pass
+
+    @pytest.mark.skip(reason="Wave 0 stub - implementation pending")
+    def test_actionable_guidance(self):
+        """ERRR-04: All error messages are actionable.
+
+        Verify that:
+        - Every error message includes next step
+        - No vague error messages like "something went wrong"
+        - User can take concrete action from message
+        """
+        pass

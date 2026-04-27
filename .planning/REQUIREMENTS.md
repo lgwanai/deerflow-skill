@@ -24,7 +24,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Tool Calling
 
-- [ ] **TOOL-01**: Skill exposes deer-flow's built-in tools (bash, read, write, str_replace)
+- [x] **TOOL-01**: Skill exposes deer-flow's built-in tools (bash, read, write, str_replace)
 - [x] **TOOL-02**: Skill loads MCP tools from extensions_config.json
 - [ ] **TOOL-03**: Skill deduplicates tools by name across sources
 - [x] **TOOL-04**: Skill logs MCP tool initialization status clearly
@@ -110,7 +110,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONF-02 | Phase 1 | Complete |
 | CONF-03 | Phase 1 | Complete |
 | CONF-04 | Phase 1 | Complete |
-| TOOL-01 | Phase 3 | Pending |
+| TOOL-01 | Phase 3 | Complete |
 | TOOL-02 | Phase 3 | Complete |
 | TOOL-03 | Phase 3 | Pending |
 | TOOL-04 | Phase 3 | Complete |

@@ -12,8 +12,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **CORE-01**: Skill imports deerflow-harness package successfully
 - [x] **CORE-02**: Skill validates config.yaml exists and is parseable at initialization
 - [x] **CORE-03**: Skill validates required credentials are present in config
-- [ ] **CORE-04**: Skill creates DeerFlowClient instance with loaded configuration
-- [ ] **CORE-05**: Skill invokes agent and receives response for single user message
+- [x] **CORE-04**: Skill creates DeerFlowClient instance with loaded configuration
+- [x] **CORE-05**: Skill invokes agent and receives response for single user message
 
 ### Configuration
 
@@ -39,9 +39,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Multi-Provider LLM
 
-- [ ] **LLM-01**: Skill supports OpenAI models via config.yaml model.use
-- [ ] **LLM-02**: Skill supports Anthropic models via config.yaml model.use
-- [ ] **LLM-03**: Skill supports local models (Ollama) via config.yaml model.use
+- [x] **LLM-01**: Skill supports OpenAI models via config.yaml model.use
+- [x] **LLM-02**: Skill supports Anthropic models via config.yaml model.use
+- [x] **LLM-03**: Skill supports local models (Ollama) via config.yaml model.use
 - [x] **LLM-04**: Skill reports clear error when model credentials missing
 
 ### Subagent Delegation
@@ -104,8 +104,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CORE-01 | Phase 1 | Complete |
 | CORE-02 | Phase 1 | Complete |
 | CORE-03 | Phase 1 | Complete |
-| CORE-04 | Phase 1 | Pending |
-| CORE-05 | Phase 1 | Pending |
+| CORE-04 | Phase 1 | Complete |
+| CORE-05 | Phase 1 | Complete |
 | CONF-01 | Phase 1 | Complete |
 | CONF-02 | Phase 1 | Complete |
 | CONF-03 | Phase 1 | Complete |
@@ -119,9 +119,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STRM-02 | Phase 2 | Pending |
 | STRM-03 | Phase 2 | Pending |
 | STRM-04 | Phase 2 | Pending |
-| LLM-01 | Phase 1 | Pending |
-| LLM-02 | Phase 1 | Pending |
-| LLM-03 | Phase 1 | Pending |
+| LLM-01 | Phase 1 | Complete |
+| LLM-02 | Phase 1 | Complete |
+| LLM-03 | Phase 1 | Complete |
 | LLM-04 | Phase 1 | Complete |
 | SUBA-01 | Phase 4 | Pending |
 | SUBA-02 | Phase 4 | Pending |

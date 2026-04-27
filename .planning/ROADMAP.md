@@ -65,7 +65,7 @@ Plans:
 **Plans**: 3 plans (including Wave 0 infrastructure)
 
 Plans:
-- [ ] 03-00-PLAN.md - Wave 0: Test stubs and mock fixtures for TOOL-*
+- [x] 03-00-PLAN.md - Wave 0: Test stubs and mock fixtures for TOOL-*
 - [ ] 03-01-PLAN.md - Built-in tool exposure (TOOL-01, TOOL-03)
 - [ ] 03-02-PLAN.md - MCP tool integration and logging (TOOL-02, TOOL-04, TOOL-05)
 
@@ -93,9 +93,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 |-------|----------------|--------|-----------|
 | 1. Core Integration | 3/3 | Complete | 2026-04-27 |
 | 2. Streaming and Error Handling | 3/3 | Complete | 2026-04-27 |
-| 3. Tool Registry Exposure | 0/3 | Not started | - |
+| 3. Tool Registry Exposure | 1/3 | In progress | - |
 | 4. Subagent Delegation | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-04-27*
-*Last updated: 2026-04-27 - Phase 3 planning complete*
+*Last updated: 2026-04-27 - Phase 3 Wave 0 complete*

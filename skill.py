@@ -31,6 +31,7 @@ from lib.config import resolve_and_validate_config
 from lib.errors import format_error, format_streaming_error, STREAMING_ERRORS
 from lib.modes import get_mode_config
 from lib.stream import stream_and_print
+from lib.tools import log_available_tools, log_mcp_status, check_mcp_tool_availability
 
 # For type hints only
 if TYPE_CHECKING:
@@ -60,6 +61,47 @@ For local development, you can also install from workspace:
             file=sys.stderr,
         )
         sys.exit(1)
+
+
+def _log_tools(client_kwargs: dict) -> None:
+    """Log available tools and MCP status after client initialization.
+
+    Args:
+        client_kwargs: The kwargs passed to DeerFlowClient (contains model info).
+
+    This function handles ImportError gracefully if deerflow-harness is not fully
+    configured for tool introspection.
+    """
+    try:
+        from deerflow.tools import get_available_tools
+        from deerflow.mcp.cache import get_cached_mcp_tools
+        from deerflow.config.extensions_config import ExtensionsConfig
+
+        # Get all tools (built-in + MCP)
+        model_name = client_kwargs.get("model_name")
+        subagent_enabled = client_kwargs.get("subagent_enabled", False)
+        tools = get_available_tools(model_name=model_name, subagent_enabled=subagent_enabled)
+
+        # Log available tools
+        log_available_tools(tools)
+
+        # Get MCP tools and server config
+        mcp_tools = get_cached_mcp_tools()
+        extensions_config = ExtensionsConfig.from_file()
+        servers = extensions_config.get_enabled_mcp_servers()
+
+        # Log MCP status
+        log_mcp_status(servers, mcp_tools)
+
+        # Check and warn about unavailable MCP tools
+        check_mcp_tool_availability(servers, mcp_tools)
+
+    except ImportError:
+        # deerflow-harness may not have MCP modules, skip silently
+        pass
+    except Exception:
+        # Tool logging is non-critical, don't fail the skill on error
+        pass
 
 
 def stream_with_error_handling(

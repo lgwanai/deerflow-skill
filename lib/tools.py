@@ -88,3 +88,40 @@ def log_mcp_status(
     print(f"[MCP tools loaded: {len(mcp_tools)}]", file=sys.stderr, flush=True)
     for tool in mcp_tools:
         print(f"  - {tool.name}", file=sys.stderr, flush=True)
+
+
+def check_mcp_tool_availability(
+    servers: dict[str, dict],
+    mcp_tools: list["BaseTool"]
+) -> list[str]:
+    """Check for expected but unavailable MCP tools (TOOL-05).
+
+    Warns when an enabled MCP server has no loaded tools, indicating
+    potential connection or configuration issues.
+
+    Args:
+        servers: Dict of {server_name: {"type": str, "enabled": bool}}
+                 from ExtensionsConfig.get_enabled_mcp_servers().
+        mcp_tools: List of MCP tools from get_cached_mcp_tools().
+
+    Returns:
+        List of warning messages for unavailable tools.
+    """
+    warnings: list[str] = []
+
+    # Get set of servers that have tools loaded
+    loaded_servers: set[str] = set()
+    for tool in mcp_tools:
+        # Parse server name from tool name: "mcp__{server}__{tool}"
+        parts = tool.name.split("__")
+        if len(parts) >= 2 and parts[0] == "mcp":
+            loaded_servers.add(parts[1])
+
+    # Check enabled servers without tools
+    for name, config in servers.items():
+        if config.get("enabled", True) and name not in loaded_servers:
+            msg = f"MCP server '{name}' enabled but no tools loaded - check server logs"
+            warnings.append(msg)
+            print(f"\n[WARNING] {msg}", file=sys.stderr, flush=True)
+
+    return warnings

@@ -163,7 +163,27 @@ class TestMCPTools:
         captured = capsys.readouterr()
         assert "No MCP servers" in captured.out or "No MCP servers" in captured.err
 
-    @pytest.mark.skip(reason="Wave 0 stub - implementation pending")
-    def test_mcp_unavailable_warning(self, caplog):
-        """TOOL-05: Verify warning when expected MCP tools unavailable."""
-        pass
+    def test_mcp_unavailable_warning(self, mock_mcp_tools, capsys):
+        """TOOL-05: Verify warning when expected MCP tools unavailable.
+
+        Expected: If MCP server enabled but no tools loaded, warn user.
+        """
+        from lib.tools import check_mcp_tool_availability
+
+        servers = {
+            "filesystem": {"type": "stdio", "enabled": True},
+            "broken-server": {"type": "stdio", "enabled": True}
+        }
+        # filesystem has tools, broken-server has none
+        mcp_tools = mock_mcp_tools(server_tools={"filesystem": ["read"]})
+
+        warnings = check_mcp_tool_availability(servers, mcp_tools)
+
+        # Should return warning for broken-server
+        assert len(warnings) == 1
+        assert "broken-server" in warnings[0]
+        assert "no tools loaded" in warnings[0]
+
+        captured = capsys.readouterr()
+        # Should print warning to stderr
+        assert "warning" in captured.err.lower() or "Warning" in captured.err

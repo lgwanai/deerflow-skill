@@ -32,10 +32,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Streaming
 
-- [ ] **STRM-01**: Skill streams agent responses token-by-token
-- [ ] **STRM-02**: Skill handles LangGraph stream events (values, messages-tuple)
-- [ ] **STRM-03**: Skill reports tool execution progress during streaming
-- [ ] **STRM-04**: Skill handles streaming errors gracefully without crashing
+- [x] **STRM-01**: Skill streams agent responses token-by-token
+- [x] **STRM-02**: Skill handles LangGraph stream events (values, messages-tuple)
+- [x] **STRM-03**: Skill reports tool execution progress during streaming
+- [x] **STRM-04**: Skill handles streaming errors gracefully without crashing
 
 ### Multi-Provider LLM
 
@@ -54,7 +54,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Error Handling
 
 - [ ] **ERRR-01**: Skill catches recursion limit exceeded with clear message
-- [ ] **ERRR-02**: Skill catches tool execution errors and continues run
+- [x] **ERRR-02**: Skill catches tool execution errors and continues run
 - [ ] **ERRR-03**: Skill catches LLM provider errors with actionable message
 - [ ] **ERRR-04**: Skill documents stateless behavior (no checkpointer by default)
 
@@ -115,10 +115,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TOOL-03 | Phase 3 | Pending |
 | TOOL-04 | Phase 3 | Pending |
 | TOOL-05 | Phase 3 | Pending |
-| STRM-01 | Phase 2 | Pending |
-| STRM-02 | Phase 2 | Pending |
-| STRM-03 | Phase 2 | Pending |
-| STRM-04 | Phase 2 | Pending |
+| STRM-01 | Phase 2 | Complete |
+| STRM-02 | Phase 2 | Complete |
+| STRM-03 | Phase 2 | Complete |
+| STRM-04 | Phase 2 | Complete |
 | LLM-01 | Phase 1 | Complete |
 | LLM-02 | Phase 1 | Complete |
 | LLM-03 | Phase 1 | Complete |
@@ -128,7 +128,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SUBA-03 | Phase 4 | Pending |
 | SUBA-04 | Phase 4 | Pending |
 | ERRR-01 | Phase 2 | Pending |
-| ERRR-02 | Phase 2 | Pending |
+| ERRR-02 | Phase 2 | Complete |
 | ERRR-03 | Phase 2 | Pending |
 | ERRR-04 | Phase 2 | Pending |
 

@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Core Integration** - Establish minimal working skill that imports deerflow-harness, loads config, and invokes the agent
 - [x] **Phase 2: Streaming and Error Handling** - Add token-by-token streaming responses and actionable error messages for all failure modes
 - [x] **Phase 3: Tool Registry Exposure** - Expose built-in tools and MCP tools with clear initialization logging
-- [ ] **Phase 4: Subagent Delegation** - Enable task_tool for parallel subtask execution with timeout handling
+- [x] **Phase 4: Subagent Delegation** - Enable task_tool for parallel subtask execution with timeout handling
 
 ## Phase Details
 
@@ -83,7 +83,7 @@ Plans:
 Plans:
 - [x] 04-00-PLAN.md - Wave 0: Test stubs for SUBA-* requirements
 - [x] 04-01-PLAN.md - Subagent configuration (timeout, concurrency, logging)
-- [ ] 04-02-PLAN.md - Timeout error handling with agent identification
+- [x] 04-02-PLAN.md - Timeout error handling with agent identification
 
 ## Progress
 
@@ -95,7 +95,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. Core Integration | 3/3 | Complete | 2026-04-27 |
 | 2. Streaming and Error Handling | 3/3 | Complete | 2026-04-27 |
 | 3. Tool Registry Exposure | 3/3 | Complete | 2026-04-27 |
-| 4. Subagent Delegation | 2/3 | In progress | 2026-04-27 |
+| 4. Subagent Delegation | 3/3 | Complete | 2026-04-27 |
 
 ---
 *Roadmap created: 2026-04-27*

@@ -1,0 +1,37 @@
+# DeerFlow Skill Configuration
+# Copy this file to config.yaml and configure your models
+
+models:
+  # OpenAI model example
+  - name: gpt-4
+    use: langchain_openai:ChatOpenAI
+    api_key: "$OPENAI_API_KEY"
+    model_kwargs:
+      model: gpt-4
+
+  # Anthropic model example
+  - name: claude-3-sonnet
+    use: langchain_anthropic:ChatAnthropic
+    api_key: "$ANTHROPIC_API_KEY"
+    model_kwargs:
+      model: claude-sonnet-4-20250514
+
+  # Ollama model example (optional, uncomment to use)
+  # - name: llama3
+  #   use: langchain_ollama:ChatOllama
+  #   model_kwargs:
+  #     model: llama3
+
+sandbox:
+  enabled: false  # Skill runs embedded in Claude Code, no sandbox
+
+# To set up credentials:
+# 1. Set environment variables:
+#    export OPENAI_API_KEY=sk-your-key-here
+#    export ANTHROPIC_API_KEY=sk-ant-your-key-here
+#
+# 2. Or create a .env file and use python-dotenv
+#
+# 3. Get API keys from:
+#    - OpenAI: https://platform.openai.com/api-keys
+#    - Anthropic: https://console.anthropic.com/settings/keys

@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: active
-stopped_at: Completed 03-tool-registry-exposure-03-00-PLAN.md
-last_updated: "2026-04-27T13:16:00Z"
-last_activity: "2026-04-27 — Completed plan 03-00: Wave 0 test infrastructure for tool registry"
+status: completed
+stopped_at: Completed 03-tool-registry-exposure-03-02-PLAN.md
+last_updated: "2026-04-27T13:23:17.299Z"
+last_activity: "2026-04-27 — Completed plan 03-02: MCP tool integration logging"
 progress:
   total_phases: 4
-  completed_phases: 2
-  total_plans: 10
-  completed_plans: 7
-  percent: 70
+  completed_phases: 3
+  total_plans: 9
+  completed_plans: 9
+  percent: 89
 ---
 
 # Project State
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-27)
 
 **Core value:** Enable Claude Code users to leverage deer-flow's production-grade agent orchestration in their local development workflow with minimal setup.
-**Current focus:** Phase 2 complete, ready for Phase 3: Tool Registry Exposure
+**Current focus:** Phase 3 in progress: Tool Registry Exposure
 
 ## Current Position
 
 Phase: 3 of 4 (Tool Registry Exposure) - ACTIVE
-Plan: 0 of 3 in current phase - COMPLETE
-Status: Wave 0 test infrastructure complete
-Last activity: 2026-04-27 — Completed plan 03-00: Wave 0 test infrastructure for tool registry
+Plan: 2 of 3 in current phase - COMPLETE
+Status: MCP tool integration logging complete
+Last activity: 2026-04-27 — Completed plan 03-02: MCP tool integration logging
 
-Progress: [███████   ] 70%
+Progress: [█████████░] 89%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
-- Average duration: 3.6 min
-- Total execution time: 27 min
+- Total plans completed: 8
+- Average duration: 3.4 min
+- Total execution time: 30 min
 
 **By Phase:**
 
@@ -45,11 +45,11 @@ Progress: [███████   ] 70%
 |-------|-------|-------|----------|
 | 1. Core Integration | 3/3 | 15 min | 5 min |
 | 2. Streaming and Error Handling | 3/3 | 10 min | 3.3 min |
-| 3. Tool Registry Exposure | 1/3 | 2 min | 2 min |
+| 3. Tool Registry Exposure | 2/3 | 5 min | 2.5 min |
 | 4. Subagent Delegation | 0/2 | - | - |
 
 **Recent Trend:**
-- Phase 3 started: Wave 0 test infrastructure complete
+- Phase 3 in progress: MCP tool integration logging complete
 
 **Plan History:**
 
@@ -62,6 +62,7 @@ Progress: [███████   ] 70%
 | Phase 02-streaming-and-error-handling P01 | 3min | 2 tasks | 2 files |
 | Phase 02-streaming-and-error-handling P02 | 5min | 3 tasks | 4 files |
 | Phase 03-tool-registry-exposure P00 | 2min | 2 tasks | 2 files |
+| Phase 03-tool-registry-exposure P02 | 3min | 3 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -84,6 +85,8 @@ Recent decisions affecting current work:
 - [Phase 02-streaming-and-error-handling P02]: Thread IDs are UUIDs for stateless sessions
 - [Phase 03-tool-registry-exposure P00]: Used factory fixture pattern consistent with Phase 2 fixtures
 - [Phase 03-tool-registry-exposure P00]: MCP tool naming convention: mcp__{server}__{tool}
+- [Phase 03-tool-registry-exposure P02]: Print MCP status to stderr for visibility (matches Phase 2 patterns)
+- [Phase 03-tool-registry-exposure P02]: Warning messages returned as list for caller flexibility
 
 ### Pending Todos
 
@@ -96,6 +99,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-27T13:14:01Z
-Stopped at: Completed 03-tool-registry-exposure-03-00-PLAN.md
+Last session: 2026-04-27T13:23:17.297Z
+Stopped at: Completed 03-tool-registry-exposure-03-02-PLAN.md
 Resume file: None

@@ -160,7 +160,12 @@ def validate_config(config_path: Path) -> None:
     missing_credentials = []
     for model in models:
         name = model.get("name", "unknown")
+        use = model.get("use", "")
         api_key = model.get("api_key", "")
+
+        # Ollama models don't require api_key
+        if "ollama" in use.lower():
+            continue
 
         # Check if api_key is empty or still has unexpanded env var
         if not api_key:

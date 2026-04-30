@@ -1,65 +1,70 @@
 ---
-name: deer-flow
-description: "Invoke deer-flow agent orchestration directly in Claude Code. Use for complex tasks requiring multi-step reasoning, tool orchestration, or subagent delegation. Supports mode presets: --flash (fastest), --standard (default), --pro (with planning), --ultra (with subagents)."
+name: deer
+description: "DeerFlow agent orchestration. Use for complex tasks requiring multi-step reasoning, web search, tool orchestration, or parallel subagent delegation. Triggers: '用deer', 'deer帮我', '调用deer', 'research task', 'complex query'."
 ---
 
-# DeerFlow Skill
+# DeerFlow Agent
 
-## Overview
+Invoke the DeerFlow agent system directly within Claude Code. No server required - runs embedded in the current process.
 
-Invoke the deer-flow agent system directly within Claude Code. No server required - runs embedded in the current process.
-
-This skill imports `deerflow-harness` package directly, leveraging proven agent orchestration without the overhead of a separate server or web interface.
-
-## Usage
+## Activation
 
 ```
-/deer-flow "your prompt here"
-/deer-flow --flash "quick task"
-/deer-flow --standard "normal task with reasoning"
-/deer-flow --pro "complex task requiring planning"
-/deer-flow --ultra "task requiring parallel subagent delegation"
+/deer "your prompt here"
+/deer --flash "quick task"
+/deer --pro "complex task needing planning"
+/deer --ultra "task requiring parallel subagent delegation"
 ```
 
-### Mode Presets
+## Mode Presets
 
 | Mode | Thinking | Planning | Subagents | Use Case |
 |------|----------|----------|-----------|----------|
-| `--flash` | No | No | No | Quick tasks, fast responses |
+| `--flash` | No | No | No | Quick responses, simple queries |
 | `--standard` | Yes | No | No | Default, balanced speed and quality |
 | `--pro` | Yes | Yes | No | Complex tasks requiring structured planning |
-| `--ultra` | Yes | Yes | Yes | Tasks benefiting from parallel agent delegation |
+| `--ultra` | Yes | Yes | Yes | Parallel subagent delegation for heavy workloads |
+
+## Features
+
+- **Web Search**: Search the web for current information via Tavily
+- **Web Fetch**: Fetch and extract content from web pages via Jina AI
+- **Multi-step Reasoning**: Extended thinking for complex problems
+- **Planning Mode**: Structured task decomposition with TodoList
+- **Subagent Delegation**: Parallel task execution with specialized agents
 
 ## Configuration
 
-Requires `config.yaml` with model credentials. The skill will auto-create `config.example.yaml` template if missing.
+Requires `config.yaml` with model credentials. Copy `config.example.yaml` to `config.yaml` and configure:
 
-**Config resolution order:**
-1. `DEER_FLOW_CONFIG_PATH` environment variable
-2. `./config.yaml` (current directory)
-3. `../config.yaml` (parent directory)
+**Required environment variables:**
+- `DEEPSEEK_API_KEY` - DeepSeek API key (recommended, cost-effective)
+- `TAVILY_API_KEY` - Tavily API key for web search
+- `JINA_API_KEY` - Jina AI API key for web fetch
 
-**Example config.yaml:**
-```yaml
-models:
-  - name: gpt-4
-    use: langchain_openai:ChatOpenAI
-    api_key: "$OPENAI_API_KEY"
+**Alternative models:**
+- `OPENAI_API_KEY` - OpenAI API key
+- `ANTHROPIC_API_KEY` - Anthropic API key
 
-  - name: claude-3-sonnet
-    use: langchain_anthropic:ChatAnthropic
-    api_key: "$ANTHROPIC_API_KEY"
+## Examples
 
-sandbox:
-  enabled: false
+```
+/deer "Research the latest developments in quantum computing"
+/deer --flash "What is the capital of France?"
+/deer --pro "Create a detailed project plan for building a REST API"
+/deer --ultra "Analyze performance across all modules and identify bottlenecks"
 ```
 
 ## Installation
 
-```bash
-# Install via pip
-pip install deerflow-harness
+The skill uses its own embedded deerflow modules. Ensure dependencies are installed:
 
-# Or with uv
-uv add deerflow-harness
+```bash
+pip install langchain langchain-anthropic langchain-openai tavily-python httpx
 ```
+
+## Notes
+
+- First run may be slower as the agent initializes
+- Web search and fetch require API keys in config.yaml
+- For local models via Ollama, ensure Ollama is running on localhost:11434

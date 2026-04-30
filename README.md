@@ -1,176 +1,122 @@
-# DeerFlow CLI Skill
+# DeerFlow Skill
 
-A Claude Code skill that embeds deer-flow's agent orchestration capabilities directly into Claude Code sessions. Invoke deer-flow's powerful agent features without running a separate server or web interface.
-
-## Overview
-
-The skill imports `deerflow-harness` package directly and runs an embedded agent loop inside Claude Code, configured via deer-flow's existing `config.yaml`. This provides:
-
-- Multi-step reasoning with thinking mode
-- Tool orchestration and MCP integration
-- Subagent delegation for parallel task execution
-- Multi-provider LLM support (OpenAI, Anthropic, local)
-
-## Installation
-
-```bash
-# Install via pip
-pip install deerflow-harness
-
-# Or with uv
-uv add deerflow-harness
-```
+Embed DeerFlow agent orchestration into Claude Code. No server required - runs embedded in the current process.
 
 ## Quick Start
 
-1. **Create config.yaml** with your model credentials:
-
-```yaml
-models:
-  - name: gpt-4
-    use: langchain_openai:ChatOpenAI
-    api_key: "$OPENAI_API_KEY"
-
-  - name: claude-3-sonnet
-    use: langchain_anthropic:ChatAnthropic
-    api_key: "$ANTHROPIC_API_KEY"
-
-sandbox:
-  enabled: false
-```
-
-2. **Set environment variables** for API keys:
-
 ```bash
-export OPENAI_API_KEY=sk-...
-export ANTHROPIC_API_KEY=sk-ant-...
+# 1. Copy config template
+cp config.example.yaml config.yaml
+
+# 2. Edit config.yaml and add your API keys
+
+# 3. Run the skill
+./scripts/chat.sh --flash "your question"
 ```
 
-3. **Invoke the skill** in Claude Code:
+## Activation in Claude Code
 
 ```
-/deer-flow "analyze the codebase and suggest improvements"
+/deer "your prompt here"
+/deer --flash "quick task"
+/deer --pro "complex task needing planning"
+/deer --ultra "task requiring parallel subagent delegation"
 ```
 
 ## Mode Presets
 
-| Mode | Flag | Thinking | Planning | Subagents | Best For |
-|------|------|----------|----------|-----------|----------|
-| Flash | `--flash` | No | No | No | Quick responses, simple queries |
-| Standard | `--standard` | Yes | No | No | Default mode, balanced quality/speed |
-| Pro | `--pro` | Yes | Yes | No | Complex tasks requiring structured planning |
-| Ultra | `--ultra` | Yes | Yes | Yes | Parallel subagent delegation |
+| Mode | Thinking | Planning | Subagents | Use Case |
+|------|----------|----------|-----------|----------|
+| `--flash` | No | No | No | Quick responses, simple queries |
+| `--standard` | Yes | No | No | Default, balanced speed and quality |
+| `--pro` | Yes | Yes | No | Complex tasks requiring structured planning |
+| `--ultra` | Yes | Yes | Yes | Parallel subagent delegation for heavy workloads |
 
-### Usage Examples
+## Features
 
-```
-# Quick task (fastest)
-/deer-flow --flash "list the main components"
+- **Web Search**: Search the web for current information via Tavily
+- **Web Fetch**: Fetch and extract content from web pages via Jina AI
+- **Multi-step Reasoning**: Extended thinking for complex problems
+- **Planning Mode**: Structured task decomposition with TodoList
+- **Subagent Delegation**: Parallel task execution with specialized agents
 
-# Default reasoning mode
-/deer-flow --standard "explain how the auth flow works"
+## Configuration
 
-# With planning for complex tasks
-/deer-flow --pro "design a new feature for user notifications"
-
-# With subagent delegation for parallel work
-/deer-flow --ultra "analyze performance across all modules"
-```
-
-## Configuration Reference
-
-### Config File Location
-
-The skill searches for `config.yaml` in this order:
-
-1. `DEER_FLOW_CONFIG_PATH` environment variable (explicit path)
-2. `./config.yaml` (current working directory)
-3. `../config.yaml` (parent directory)
-
-### Config Structure
+Edit `config.yaml` with your credentials:
 
 ```yaml
 models:
-  - name: <model-name>
-    use: <langchain-provider>:<class>
-    api_key: "$<ENV_VAR>"  # Environment variable reference
-    # Additional model params...
-
-sandbox:
-  enabled: false  # No sandbox - runs directly in Claude Code
-
-extensions_config:
-  mcp_servers: []  # MCP server configurations (optional)
-```
-
-### Supported LLM Providers
-
-| Provider | `use` Field | Required Env Var |
-|----------|-------------|------------------|
-| OpenAI | `langchain_openai:ChatOpenAI` | `OPENAI_API_KEY` |
-| Anthropic | `langchain_anthropic:ChatAnthropic` | `ANTHROPIC_API_KEY` |
-| Ollama | `langchain_ollama:ChatOllama` | None (local) |
-
-### Example Configurations
-
-**OpenAI only:**
-```yaml
-models:
-  - name: gpt-4o
-    use: langchain_openai:ChatOpenAI
-    api_key: "$OPENAI_API_KEY"
-    model_name: gpt-4o
-```
-
-**Anthropic only:**
-```yaml
-models:
-  - name: claude-3-sonnet
+  - name: deepseek-v4-flash
     use: langchain_anthropic:ChatAnthropic
-    api_key: "$ANTHROPIC_API_KEY"
-    model_name: claude-3-sonnet-20240229
+    model: deepseek-v4-flash
+    api_key: $DEEPSEEK_API_KEY
+    base_url: https://api.deepseek.com/anthropic
+
+tools:
+  - name: web_search
+    use: deerflow.community.tavily.tools:web_search_tool
+    api_key: $TAVILY_API_KEY
+
+  - name: web_fetch
+    use: deerflow.community.jina_ai.tools:web_fetch_tool
+    api_key: $JINA_API_KEY
 ```
 
-**Local Ollama:**
-```yaml
-models:
-  - name: llama3
-    use: langchain_ollama:ChatOllama
-    model_name: llama3
-    base_url: http://localhost:11434
-```
+### Required API Keys
 
-## Error Handling
-
-The skill provides clear, actionable error messages:
-
-- **Missing package:** Shows pip/uv install commands
-- **Missing config:** Creates `config.example.yaml` template with guidance
-- **Missing credentials:** Lists required env vars with example values
+| Key | Service | Get it from |
+|-----|---------|-------------|
+| `DEEPSEEK_API_KEY` | DeepSeek models | https://platform.deepseek.com |
+| `TAVILY_API_KEY` | Web search | https://tavily.com |
+| `JINA_API_KEY` | Web fetch | https://jina.ai/reader |
 
 ## Project Structure
 
 ```
 deerflow-skill/
-├── SKILL.md           # Claude Code skill definition
-├── skill.py           # Entry point (future phase)
-├── lib/
-│   ├── __init__.py    # Package marker
-│   ├── config.py      # Config resolution (future phase)
-│   ├── errors.py      # Error formatting (future phase)
-│   └── modes.py       # Mode presets (future phase)
+├── SKILL.md              # Skill definition for Claude Code
+├── config.yaml           # Your configuration (gitignored)
+├── config.example.yaml   # Configuration template
 ├── scripts/
-│   └── chat.sh        # Shell wrapper (future phase)
-├── tests/             # Test suite (future phase)
-├── README.md          # This documentation
-└── pyproject.toml     # Dependencies
+│   ├── skill.py          # Main entry point
+│   └── chat.sh           # Shell wrapper
+├── deerflow/             # Embedded DeerFlow core modules
+├── lib/                  # Helper utilities
+└── tests/                # Test suite
+```
+
+## Development
+
+### Run Tests
+
+```bash
+python -m pytest tests/
+```
+
+### Dependencies
+
+Install required packages:
+
+```bash
+pip install langchain langchain-anthropic langchain-openai tavily-python httpx pyyaml
+```
+
+## Examples
+
+```bash
+# Quick question
+./scripts/chat.sh --flash "What is quantum computing?"
+
+# Research task
+./scripts/chat.sh "Research the latest AI developments in 2025"
+
+# Complex task with planning
+./scripts/chat.sh --pro "Create a project plan for building a REST API"
+
+# Parallel analysis
+./scripts/chat.sh --ultra "Analyze performance across all modules"
 ```
 
 ## License
 
 MIT
-
-## Links
-
-- **Source:** deer-flow agent framework
-- **Package:** deerflow-harness on PyPI

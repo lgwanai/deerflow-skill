@@ -1,30 +1,16 @@
 #!/usr/bin/env python3
-"""DeerFlow Claude Code skill entry point.
-
-This is the main entry point for invoking the deer-flow agent
-directly from Claude Code. The skill:
-
-1. Parses CLI arguments for mode preset and prompt
-2. Resolves and validates configuration
-3. Creates DeerFlowClient with mode settings
-4. Invokes the agent with streaming and prints the response
-
-Usage:
-    python skill.py "your prompt here"
-    python skill.py --flash "quick task"
-    python skill.py --pro "complex task needing planning"
-    python skill.py --ultra "task requiring subagent delegation"
-
-For configuration help, see config.example.yaml.
-"""
-
+import os
 import sys
 import uuid
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-# Ensure lib is importable
-sys.path.insert(0, str(Path(__file__).parent))
+for env_var in ["ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_BASE_URL"]:
+    os.environ.pop(env_var, None)
+
+SKILL_ROOT = Path(__file__).parent.parent.resolve()
+sys.path.insert(0, str(SKILL_ROOT))
+os.environ["DEER_FLOW_CONFIG_PATH"] = str(SKILL_ROOT / "config.yaml")
 
 # Import local modules (always available)
 from lib.config import resolve_and_validate_config

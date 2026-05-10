@@ -1,10 +1,6 @@
 ---
 name: deer
-description: >
-  DeerFlow agent orchestration. Use for complex tasks requiring multi-step reasoning,
-  web search, tool orchestration, or parallel subagent delegation. Triggers: '用deer',
-  'deer帮我', '调用deer', 'research task', 'complex query'.
-allowed-tools: Bash(python scripts/skill.py:*), Bash(./scripts/chat.sh:*)
+description: DeerFlow agent orchestration. Use for complex tasks requiring multi-step reasoning, web search, tool orchestration, or parallel subagent delegation. Triggers include '用deer', 'deer帮我', '调用deer', 'research task', or 'complex query'.
 ---
 
 # DeerFlow Agent
@@ -13,11 +9,11 @@ Invoke the DeerFlow agent system directly within Claude Code. No server required
 
 ## Activation
 
-```
-/deer "your prompt here"
-/deer --flash "quick task"
-/deer --pro "complex task needing planning"
-/deer --ultra "task requiring parallel subagent delegation"
+```bash
+python scripts/skill.py "your prompt here"
+python scripts/skill.py --flash "quick task"
+python scripts/skill.py --pro "complex task needing planning"
+python scripts/skill.py --ultra "task requiring parallel subagent delegation"
 ```
 
 ## Mode Presets
@@ -39,29 +35,24 @@ Invoke the DeerFlow agent system directly within Claude Code. No server required
 
 ## Configuration
 
-Requires `config.yaml` with model credentials. Copy `config.example.yaml` to `config.yaml` and configure:
+Copy `config.example.yaml` to `config.yaml` and configure API keys:
 
-**Required environment variables:**
 - `DEEPSEEK_API_KEY` - DeepSeek API key (recommended, cost-effective)
 - `TAVILY_API_KEY` - Tavily API key for web search
 - `JINA_API_KEY` - Jina AI API key for web fetch
 
-**Alternative models:**
-- `OPENAI_API_KEY` - OpenAI API key
-- `ANTHROPIC_API_KEY` - Anthropic API key
+Alternative models: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`
 
 ## Examples
 
-```
-/deer "Research the latest developments in quantum computing"
-/deer --flash "What is the capital of France?"
-/deer --pro "Create a detailed project plan for building a REST API"
-/deer --ultra "Analyze performance across all modules and identify bottlenecks"
+```bash
+python scripts/skill.py "Research the latest developments in quantum computing"
+python scripts/skill.py --flash "What is the capital of France?"
+python scripts/skill.py --pro "Create a detailed project plan for building a REST API"
+python scripts/skill.py --ultra "Analyze performance across all modules and identify bottlenecks"
 ```
 
 ## Installation
-
-The skill uses its own embedded deerflow modules. Ensure dependencies are installed:
 
 ```bash
 pip install langchain langchain-anthropic langchain-openai tavily-python httpx

@@ -1,6 +1,10 @@
 ---
 name: deer
-description: "DeerFlow agent orchestration. Use for complex tasks requiring multi-step reasoning, web search, tool orchestration, or parallel subagent delegation. Triggers: '用deer', 'deer帮我', '调用deer', 'research task', 'complex query'."
+description: >
+  DeerFlow agent orchestration. Use for complex tasks requiring multi-step reasoning,
+  web search, tool orchestration, or parallel subagent delegation. Triggers: '用deer',
+  'deer帮我', '调用deer', 'research task', 'complex query'.
+allowed-tools: Bash(python scripts/skill.py:*), Bash(./scripts/chat.sh:*)
 ---
 
 # DeerFlow Agent

@@ -1,6 +1,6 @@
 ---
 name: deerflow-skill
-description: DeerFlow agent orchestration for complex tasks requiring multi-step reasoning, web search, tool orchestration, or parallel subagent delegation. Use when user needs to research topics, search web, or delegate complex tasks to subagents. Triggers: 用deer, deer帮我, 调用deer, research, 搜索, 调研任务. 使用此 Skill 进行复杂任务的编排和执行。
+description: DeerFlow agent orchestration for complex tasks requiring multi-step reasoning, web search, tool orchestration, or parallel subagent delegation. Use when user needs to research topics, search web, or delegate complex tasks to subagents. 使用此 Skill 进行复杂任务的编排和执行。
 ---
 
 # DeerFlow Agent
@@ -35,13 +35,13 @@ python scripts/skill.py --ultra "task requiring parallel subagent delegation"
 
 ## Configuration
 
-Requires `config.yaml` with model credentials. Copy `config.example.yaml` to `config.yaml` and configure:
+Requires config.yaml with model credentials. Copy config.example.yaml to config.yaml and configure:
 
-- `DEEPSEEK_API_KEY` - DeepSeek API key (recommended, cost-effective)
-- `TAVILY_API_KEY` - Tavily API key for web search
-- `JINA_API_KEY` - Jina AI API key for web fetch
+- DEEPSEEK_API_KEY - DeepSeek API key (recommended, cost-effective)
+- TAVILY_API_KEY - Tavily API key for web search
+- JINA_API_KEY - Jina AI API key for web fetch
 
-Alternative models: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`
+Alternative models: OPENAI_API_KEY, ANTHROPIC_API_KEY
 
 ## Examples
 

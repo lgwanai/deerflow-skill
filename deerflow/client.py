@@ -263,25 +263,35 @@ class DeerFlowClient:
         return [{"name": tc["name"], "args": tc["args"], "id": tc.get("id")} for tc in tool_calls]
 
     @staticmethod
-    def _ai_text_event(msg_id: str | None, text: str, usage: dict | None) -> "StreamEvent":
-        """Build a ``messages-tuple`` AI text event, attaching usage when present."""
+    def _serialize_additional_kwargs(msg) -> dict[str, Any] | None:
+        """Copy message additional_kwargs when present."""
+        additional_kwargs = getattr(msg, "additional_kwargs", None)
+        if isinstance(additional_kwargs, dict) and additional_kwargs:
+            return dict(additional_kwargs)
+        return None
+
+    @staticmethod
+    def _ai_text_event(msg_id: str | None, text: str, usage: dict | None, additional_kwargs: dict[str, Any] | None = None) -> "StreamEvent":
+        """Build a ``messages-tuple`` AI text event."""
         data: dict[str, Any] = {"type": "ai", "content": text, "id": msg_id}
         if usage:
             data["usage_metadata"] = usage
+        if additional_kwargs:
+            data["additional_kwargs"] = additional_kwargs
         return StreamEvent(type="messages-tuple", data=data)
 
     @staticmethod
-    def _ai_tool_calls_event(msg_id: str | None, tool_calls) -> "StreamEvent":
+    def _ai_tool_calls_event(msg_id: str | None, tool_calls, additional_kwargs: dict[str, Any] | None = None) -> "StreamEvent":
         """Build a ``messages-tuple`` AI tool-calls event."""
-        return StreamEvent(
-            type="messages-tuple",
-            data={
-                "type": "ai",
-                "content": "",
-                "id": msg_id,
-                "tool_calls": DeerFlowClient._serialize_tool_calls(tool_calls),
-            },
-        )
+        data: dict[str, Any] = {
+            "type": "ai",
+            "content": "",
+            "id": msg_id,
+            "tool_calls": DeerFlowClient._serialize_tool_calls(tool_calls),
+        }
+        if additional_kwargs:
+            data["additional_kwargs"] = additional_kwargs
+        return StreamEvent(type="messages-tuple", data=data)
 
     @staticmethod
     def _tool_message_event(msg: ToolMessage) -> "StreamEvent":
@@ -306,6 +316,8 @@ class DeerFlowClient:
                 d["tool_calls"] = DeerFlowClient._serialize_tool_calls(msg.tool_calls)
             if getattr(msg, "usage_metadata", None):
                 d["usage_metadata"] = msg.usage_metadata
+            if additional_kwargs := DeerFlowClient._serialize_additional_kwargs(msg):
+                d["additional_kwargs"] = additional_kwargs
             return d
         if isinstance(msg, ToolMessage):
             return {
@@ -316,9 +328,15 @@ class DeerFlowClient:
                 "id": getattr(msg, "id", None),
             }
         if isinstance(msg, HumanMessage):
-            return {"type": "human", "content": msg.content, "id": getattr(msg, "id", None)}
+            d = {"type": "human", "content": msg.content, "id": getattr(msg, "id", None)}
+            if additional_kwargs := DeerFlowClient._serialize_additional_kwargs(msg):
+                d["additional_kwargs"] = additional_kwargs
+            return d
         if isinstance(msg, SystemMessage):
-            return {"type": "system", "content": msg.content, "id": getattr(msg, "id", None)}
+            d = {"type": "system", "content": msg.content, "id": getattr(msg, "id", None)}
+            if additional_kwargs := DeerFlowClient._serialize_additional_kwargs(msg):
+                d["additional_kwargs"] = additional_kwargs
+            return d
         return {"type": "unknown", "content": str(msg), "id": getattr(msg, "id", None)}
 
     @staticmethod

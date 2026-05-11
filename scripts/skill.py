@@ -199,7 +199,8 @@ def main_with_args(argv: list[str]) -> None:
         # Add subagent config if subagent_enabled (SUBA-01, SUBA-02, SUBA-04)
         if client_kwargs.get("subagent_enabled"):
             subagent_config = get_subagent_config()
-            client_kwargs.update(subagent_config)
+            # Remove params not accepted by DeerFlowClient.__init__
+            # subagent_timeout and max_concurrent_subagents are used by subagent middleware
             log_subagent_config()
 
         # Get DeerFlowClient (will exit if not installed)

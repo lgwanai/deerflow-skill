@@ -86,7 +86,7 @@ def get_available_tools(
                 cfg.use,
             )
 
-    loaded_tools = [_ensure_sync_invocable_tool(t) for _, t in loaded_tools_raw]
+    loaded_tools = [t for _, t in loaded_tools_raw]
 
     # Conditionally add tools based on config
     builtin_tools = BUILTIN_TOOLS.copy()
@@ -170,7 +170,7 @@ def get_available_tools(
     unique_tools: list[BaseTool] = []
     for t in all_tools:
         if t.name not in seen_names:
-            unique_tools.append(t)
+            unique_tools.append(_ensure_sync_invocable_tool(t))
             seen_names.add(t.name)
         else:
             logger.warning(

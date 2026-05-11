@@ -39,6 +39,8 @@ cp config.example.yaml config.yaml
 - **Multi-step Reasoning**: Extended thinking for complex problems
 - **Planning Mode**: Structured task decomposition with TodoList
 - **Subagent Delegation**: Parallel task execution with specialized agents
+- **Async/Sync Wrapper**: Automatic sync wrapper for async-only tools
+- **Loop Detection**: Configurable loop detection with per-tool frequency threshold overrides
 
 ## Configuration
 
@@ -79,11 +81,27 @@ deerflow-skill/
 ├── config.example.yaml   # Configuration template
 ├── scripts/
 │   ├── skill.py          # Main entry point
-│   └── chat.sh           # Shell wrapper
+│   ├── chat.sh           # Shell wrapper
+│   └── package.sh        # Packaging script
 ├── deerflow/             # Embedded DeerFlow core modules
+│   ├── client.py         # DeerFlowClient API
+│   ├── agents/           # Agent orchestration
+│   ├── tools/            # Tool definitions + sync wrapper
+│   ├── config/           # Configuration models
+│   ├── community/        # Third-party integrations
+│   └── ...
 ├── lib/                  # Helper utilities
-└── tests/                # Test suite
+├── tests/                # Test suite
+└── dist/                 # Packaged zip output
 ```
+
+## Packaging
+
+```bash
+./scripts/package.sh
+```
+
+Output: `dist/deerflow-skill-YYYYMMDD.zip` (excludes .gitignore files)
 
 ## Development
 
@@ -94,8 +112,6 @@ python -m pytest tests/
 ```
 
 ### Dependencies
-
-Install required packages:
 
 ```bash
 pip install langchain langchain-anthropic langchain-openai tavily-python httpx pyyaml
@@ -108,13 +124,16 @@ pip install langchain langchain-anthropic langchain-openai tavily-python httpx p
 ./scripts/chat.sh --flash "What is quantum computing?"
 
 # Research task
-./scripts/chat.sh "Research the latest AI developments in 2025"
+./scripts/chat.sh "Research the latest AI developments"
 
 # Complex task with planning
 ./scripts/chat.sh --pro "Create a project plan for building a REST API"
 
 # Parallel analysis
 ./scripts/chat.sh --ultra "Analyze performance across all modules"
+
+# Research and save to file
+./scripts/chat.sh --flash "Research topic" > report.md
 ```
 
 ## License

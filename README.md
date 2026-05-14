@@ -2,6 +2,8 @@
 
 Embed DeerFlow agent orchestration into Claude Code. No server required - runs embedded in the current process.
 
+基于 [deer-flow](https://github.com/bytedance/deer-flow) 内核，持续同步上游更新。
+
 ## Quick Start
 
 ```bash
@@ -14,7 +16,7 @@ cp config.example.yaml config.yaml
 ./scripts/chat.sh --flash "your question"
 ```
 
-## Activation in Claude Code
+## Activation
 
 ```
 /deer "your prompt here"
@@ -38,9 +40,11 @@ cp config.example.yaml config.yaml
 - **Web Fetch**: Fetch and extract content from web pages via Jina AI
 - **Multi-step Reasoning**: Extended thinking for complex problems
 - **Planning Mode**: Structured task decomposition with TodoList
-- **Subagent Delegation**: Parallel task execution with specialized agents
-- **Async/Sync Wrapper**: Automatic sync wrapper for async-only tools
+- **Subagent Delegation**: Parallel task execution with specialized agents (persistent event loop)
+- **Async/Sync Bridge**: Automatic sync wrapper for async-only tools via `tools/sync.py`
 - **Loop Detection**: Configurable loop detection with per-tool frequency threshold overrides
+- **Token Tracking**: Subagent token usage collection and reporting
+- **Agent Updates**: Runtime agent configuration updates via `update_agent_tool`
 
 ## Configuration
 
@@ -76,21 +80,27 @@ tools:
 
 ```
 deerflow-skill/
-├── SKILL.md              # Skill definition for Claude Code
+├── SKILL.md              # Skill definition
 ├── config.yaml           # Your configuration (gitignored)
 ├── config.example.yaml   # Configuration template
 ├── scripts/
 │   ├── skill.py          # Main entry point
 │   ├── chat.sh           # Shell wrapper
 │   └── package.sh        # Packaging script
-├── deerflow/             # Embedded DeerFlow core modules
+├── deerflow/             # Embedded deer-flow core
 │   ├── client.py         # DeerFlowClient API
-│   ├── agents/           # Agent orchestration
-│   ├── tools/            # Tool definitions + sync wrapper
-│   ├── config/           # Configuration models
-│   ├── community/        # Third-party integrations
-│   └── ...
-├── lib/                  # Helper utilities
+│   ├── agents/           # Agent orchestration + middlewares
+│   ├── tools/            # Tools + sync wrapper + types
+│   ├── config/           # 20+ configuration models
+│   ├── community/        # Tavily, Jina, Firecrawl, etc.
+│   ├── subagents/        # Subagent executor + token collector
+│   ├── runtime/          # Checkpointer, runs, user_context
+│   ├── skills/           # Skill manager + storage + tool_policy
+│   ├── models/           # LLM providers (Claude, DeepSeek, OpenAI)
+│   ├── sandbox/          # Local sandbox execution
+│   ├── mcp/              # MCP protocol client
+│   └── utils/            # Network, readability, time
+├── lib/                  # Skill helper utilities
 ├── tests/                # Test suite
 └── dist/                 # Packaged zip output
 ```
@@ -101,21 +111,7 @@ deerflow-skill/
 ./scripts/package.sh
 ```
 
-Output: `dist/deerflow-skill-YYYYMMDD.zip` (excludes .gitignore files)
-
-## Development
-
-### Run Tests
-
-```bash
-python -m pytest tests/
-```
-
-### Dependencies
-
-```bash
-pip install langchain langchain-anthropic langchain-openai tavily-python httpx pyyaml
-```
+Output: `dist/deerflow-skill-YYYYMMDD.zip` (~390KB, excludes .gitignore files)
 
 ## Examples
 
@@ -132,8 +128,22 @@ pip install langchain langchain-anthropic langchain-openai tavily-python httpx p
 # Parallel analysis
 ./scripts/chat.sh --ultra "Analyze performance across all modules"
 
-# Research and save to file
-./scripts/chat.sh --flash "Research topic" > report.md
+# Research and save to file (stderr logs stay in terminal)
+./scripts/chat.sh --flash "Research Tesla vs BYD" > report.md
+```
+
+## Development
+
+### Run Tests
+
+```bash
+python -m pytest tests/
+```
+
+### Dependencies
+
+```bash
+pip install langchain langchain-anthropic langchain-openai tavily-python httpx pyyaml
 ```
 
 ## License

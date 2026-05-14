@@ -1,54 +1,89 @@
 # DeerFlow Skill
 
-Embed DeerFlow agent orchestration into Claude Code. No server required - runs embedded in the current process.
+将 DeerFlow 智能体能力嵌入 Claude Code，无需服务器即可在本地进程内运行深度研究、多步推理、并行子代理等复杂任务。
 
-基于 [deer-flow](https://github.com/bytedance/deer-flow) 内核，持续同步上游更新（last sync: May 2026）。
+基于 [deer-flow](https://github.com/bytedance/deer-flow) 内核，持续同步上游更新（last sync: 2026.05）。
 
-## Quick Start
+---
+
+## 能解决什么问题
+
+当你需要 AI 完成「一次对话搞不定」的任务时，这个 Skill 提供企业级 AI Agent 能力：
+
+| 场景 | 典型问题 | 对应模式 |
+|------|---------|----------|
+| **快速问答** | "Python 和 Go 的区别？" | `--flash` |
+| **深度调研** | "调研 2026 年 AI 最新进展，并给出分析" | `--standard` |
+| **复杂规划** | "制定一个月的 Python 学习计划" | `--pro` |
+| **大规模分析** | "对比特斯拉和比亚迪的技术路线、市场策略、未来发展" | `--ultra` |
+| **研究报告** | "研究 XX 行业趋势，输出 Markdown 报告" | `--flash` + 管道 |
+
+**核心能力**：自主搜索网页 → 阅读文章 → 多步推理 → 并行分发子任务 → 生成引用报告
+
+---
+
+## 使用方法
+
+### 在 Claude Code 中激活
+
+```
+/deer 研究量子计算的最新进展
+/deer --flash 今天北京的天气
+/deer --pro 制定一个 REST API 项目计划
+/deer --ultra 对比三家竞品公司的技术栈
+```
+
+### 命令行使用
 
 ```bash
-# 1. Copy config template
+# 快速问答
+./scripts/chat.sh --flash "Python 的 GIL 是什么"
+
+# 深度调研
+./scripts/chat.sh --pro "分析 2026 年 AI 行业趋势"
+
+# 并行分析
+./scripts/chat.sh --ultra "对比国内外新能源汽车技术路线"
+
+# 生成报告文件（日志在终端，AI 内容进文件）
+./scripts/chat.sh --flash "调研特斯拉和比亚迪" > tesla_vs_byd.md
+```
+
+### 模式说明
+
+| 模式 | 思考 | 规划 | 子代理 | 适用场景 |
+|------|------|------|--------|----------|
+| `--flash` | ✗ | ✗ | ✗ | 一句话能说清的问题 |
+| `--standard` | ✓ | ✗ | ✗ | 默认模式，平衡速度和质量 |
+| `--pro` | ✓ | ✓ | ✗ | 需要结构化规划的复杂任务 |
+| `--ultra` | ✓ | ✓ | ✓ | 大规模任务，并行分发子代理 |
+
+---
+
+## 快速开始
+
+```bash
+# 1. 复制配置模板
 cp config.example.yaml config.yaml
 
-# 2. Edit config.yaml and add your API keys
+# 2. 编辑 config.yaml，填入 API Keys
 
-# 3. Run the skill
-./scripts/chat.sh --flash "your question"
+# 3. 安装依赖
+pip install langchain langchain-anthropic langchain-openai tavily-python httpx pyyaml
+
+# 4. 运行
+./scripts/chat.sh --flash "你的第一个问题"
 ```
 
-## Activation
+### 所需 API Keys
 
-```
-/deer "your prompt here"
-/deer --flash "quick task"
-/deer --pro "complex task needing planning"
-/deer --ultra "task requiring parallel subagent delegation"
-```
+| Key | 用途 | 获取地址 |
+|-----|------|----------|
+| `DEEPSEEK_API_KEY` | 模型推理 | https://platform.deepseek.com |
+| `TAVILY_API_KEY` | 网页搜索 | https://tavily.com |
+| `JINA_API_KEY` | 网页内容抓取 | https://jina.ai/reader |
 
-## Mode Presets
-
-| Mode | Thinking | Planning | Subagents | Use Case |
-|------|----------|----------|-----------|----------|
-| `--flash` | No | No | No | Quick responses, simple queries |
-| `--standard` | Yes | No | No | Default, balanced speed and quality |
-| `--pro` | Yes | Yes | No | Complex tasks requiring structured planning |
-| `--ultra` | Yes | Yes | Yes | Parallel subagent delegation for heavy workloads |
-
-## Features
-
-- **Web Search**: Search the web for current information via Tavily
-- **Web Fetch**: Fetch and extract content from web pages via Jina AI
-- **Multi-step Reasoning**: Extended thinking for complex problems
-- **Planning Mode**: Structured task decomposition with TodoList
-- **Subagent Delegation**: Parallel task execution with specialized agents (persistent event loop)
-- **Async/Sync Bridge**: Automatic sync wrapper for async-only tools via `tools/sync.py`
-- **Loop Detection**: Configurable loop detection with per-tool frequency threshold overrides
-- **Token Tracking**: Subagent token usage collection and reporting
-- **Agent Updates**: Runtime agent configuration updates via `update_agent_tool`
-
-## Configuration
-
-Edit `config.yaml` with your credentials:
+### 配置示例
 
 ```yaml
 models:
@@ -68,82 +103,51 @@ tools:
     api_key: $JINA_API_KEY
 ```
 
-### Required API Keys
+---
 
-| Key | Service | Get it from |
-|-----|---------|-------------|
-| `DEEPSEEK_API_KEY` | DeepSeek models | https://platform.deepseek.com |
-| `TAVILY_API_KEY` | Web search | https://tavily.com |
-| `JINA_API_KEY` | Web fetch | https://jina.ai/reader |
+## 功能特性
 
-## Project Structure
+- **网页搜索**：通过 Tavily 实时搜索互联网
+- **内容抓取**：通过 Jina AI 提取网页正文
+- **多步推理**：复杂问题的深度思考链路
+- **规划模式**：TodoList 结构化的任务分解和追踪
+- **子代理委托**：持久化事件循环驱动的并行子任务执行
+- **循环检测**：可配置的重复调用检测，支持每种工具单独设定阈值
+- **Async/Sync 桥接**：`tools/sync.py` 自动为 async 工具生成同步包装器
+- **Token 追踪**：子代理 Token 用量收集和汇总
+
+---
+
+## 项目结构
 
 ```
 deerflow-skill/
-├── SKILL.md              # Skill definition
-├── config.yaml           # Your configuration (gitignored)
-├── config.example.yaml   # Configuration template
+├── SKILL.md              # Skill 定义
+├── config.yaml           # 配置文件（gitignored）
+├── config.example.yaml   # 配置模板
 ├── scripts/
-│   ├── skill.py          # Main entry point
-│   ├── chat.sh           # Shell wrapper
-│   └── package.sh        # Packaging script
-├── deerflow/             # Embedded deer-flow core
+│   ├── skill.py          # 主入口
+│   ├── chat.sh           # Shell 包装
+│   └── package.sh        # 打包脚本
+├── deerflow/             # 嵌入的 deer-flow 核心
 │   ├── client.py         # DeerFlowClient API
-│   ├── agents/           # Agent orchestration + middlewares
-│   ├── tools/            # Tools + sync wrapper + types
-│   ├── config/           # 20+ configuration models
-│   ├── community/        # Tavily, Jina, Firecrawl, etc.
-│   ├── subagents/        # Subagent executor + token collector
-│   ├── runtime/          # Checkpointer, runs, user_context
-│   ├── skills/           # Skill manager + storage + tool_policy
-│   ├── models/           # LLM providers (Claude, DeepSeek, OpenAI)
-│   ├── sandbox/          # Local sandbox execution
-│   ├── mcp/              # MCP protocol client
-│   └── utils/            # Network, readability, time
-├── lib/                  # Skill helper utilities
-├── tests/                # Test suite
-└── dist/                 # Packaged zip output
+│   ├── agents/           # Agent 编排 + 中间件
+│   ├── tools/            # 工具定义 + sync 包装器
+│   ├── config/           # 20+ 配置模型
+│   ├── community/        # Tavily, Jina, Firecrawl 等
+│   ├── subagents/        # 子代理执行器 + Token 收集
+│   ├── runtime/          # Checkpointer、运行时、用户上下文
+│   └── ...
+├── lib/                  # 辅助工具
+├── tests/                # 测试套件
+└── dist/                 # 打包输出
 ```
 
-## Packaging
+## 打包
 
 ```bash
 ./scripts/package.sh
-```
-
-Output: `dist/deerflow-skill-YYYYMMDD.zip` (~390KB, excludes .gitignore files)
-
-## Examples
-
-```bash
-# Quick question
-./scripts/chat.sh --flash "What is quantum computing?"
-
-# Research task
-./scripts/chat.sh "Research the latest AI developments"
-
-# Complex task with planning
-./scripts/chat.sh --pro "Create a project plan for building a REST API"
-
-# Parallel analysis
-./scripts/chat.sh --ultra "Analyze performance across all modules"
-
-# Research and save to file (stderr logs stay in terminal)
-./scripts/chat.sh --flash "Research Tesla vs BYD" > report.md
-```
-
-## Development
-
-### Run Tests
-
-```bash
-python -m pytest tests/
-```
-
-### Dependencies
-
-```bash
-pip install langchain langchain-anthropic langchain-openai tavily-python httpx pyyaml
+# 输出: dist/deerflow-skill-YYYYMMDD.zip (~390KB)
 ```
 
 ## License

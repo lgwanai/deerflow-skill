@@ -2,7 +2,7 @@
 
 Embed DeerFlow agent orchestration into Claude Code. No server required - runs embedded in the current process.
 
-基于 [deer-flow](https://github.com/bytedance/deer-flow) 内核，持续同步上游更新。
+基于 [deer-flow](https://github.com/bytedance/deer-flow) 内核，持续同步上游更新（last sync: May 2026）。
 
 ## Quick Start
 

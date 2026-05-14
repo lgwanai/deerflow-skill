@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+import logging
 import os
 import sys
 import uuid
+import warnings
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -11,6 +13,10 @@ for env_var in ["ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_BASE_URL
 SKILL_ROOT = Path(__file__).parent.parent.resolve()
 sys.path.insert(0, str(SKILL_ROOT))
 os.environ["DEER_FLOW_CONFIG_PATH"] = str(SKILL_ROOT / "config.yaml")
+
+# Suppress library noise — keep only our own progress output on stderr
+warnings.filterwarnings("ignore")
+logging.getLogger("deerflow").setLevel(logging.CRITICAL)
 
 # Import local modules (always available)
 from lib.config import resolve_and_validate_config

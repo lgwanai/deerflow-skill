@@ -210,7 +210,7 @@ def get_available_tools(
     unique_tools: list[BaseTool] = []
     for t in all_tools:
         if t.name not in seen_names:
-            unique_tools.append(t)
+            unique_tools.append(_ensure_sync_invocable_tool(t))
             seen_names.add(t.name)
         else:
             logger.warning(

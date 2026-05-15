@@ -1,10 +1,14 @@
 #!/bin/bash
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
-DEERFLOW_VENV="$HOME/project/deer-flow/backend/.venv/bin/python"
-
-if [[ -x "$DEERFLOW_VENV" ]]; then
-    "$DEERFLOW_VENV" "$SCRIPT_DIR/skill.py" "$@"
+# Try venv in project directory, then system python
+if [[ -x "$PROJECT_ROOT/.venv/bin/python" ]]; then
+    PYTHON="$PROJECT_ROOT/.venv/bin/python"
+elif command -v python3 &>/dev/null; then
+    PYTHON="python3"
 else
-    python "$SCRIPT_DIR/skill.py" "$@"
+    PYTHON="python"
 fi
+
+exec "$PYTHON" "$SCRIPT_DIR/skill.py" "$@"

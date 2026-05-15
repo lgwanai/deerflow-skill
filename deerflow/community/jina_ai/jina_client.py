@@ -29,16 +29,3 @@ class JinaClient:
             return "Error: 网页获取超时，请稍后重试"
         except Exception:
             return "Error: 网页获取失败，请稍后重试"
-
-            content = response.content.decode("utf-8", errors="replace")
-            if not content or not content.strip():
-                logger.error("Jina API returned empty response")
-                return "Error: 网页内容为空"
-
-            return content
-        except httpx.TimeoutException:
-            logger.warning("Jina API timeout for url: %s", url)
-            return "Error: 网页获取超时，请稍后重试"
-        except Exception:
-            logger.warning("Jina API request failed")
-            return "Error: 网页获取失败，请稍后重试"

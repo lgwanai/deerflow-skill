@@ -83,7 +83,7 @@ pip install langchain langchain-anthropic langchain-openai tavily-python httpx p
 | `TAVILY_API_KEY` | 网页搜索 | https://tavily.com |
 | `JINA_API_KEY` | 网页内容抓取 | https://jina.ai/reader |
 
-### 配置示例
+### 配置说明
 
 ```yaml
 models:
@@ -97,10 +97,14 @@ tools:
   - name: web_search
     use: deerflow.community.tavily.tools:web_search_tool
     api_key: $TAVILY_API_KEY
-
   - name: web_fetch
     use: deerflow.community.jina_ai.tools:web_fetch_tool
     api_key: $JINA_API_KEY
+
+# 子代理配置（可选）
+subagents:
+  max_concurrent: 3      # 最大并行子代理数
+  timeout_seconds: 900   # 子代理超时时间（秒）
 ```
 
 ---
@@ -114,7 +118,8 @@ tools:
 - **子代理委托**：持久化事件循环驱动的并行子任务执行
 - **循环检测**：可配置的重复调用检测，支持每种工具单独设定阈值
 - **Async/Sync 桥接**：`tools/sync.py` 自动为 async 工具生成同步包装器
-- **Token 追踪**：子代理 Token 用量收集和汇总
+- **沙箱安全**：路径穿越防护，禁止越权访问文件系统
+- **输出隔离**：日志到 stderr，AI 内容到 stdout，文件输出零污染
 
 ---
 
@@ -137,9 +142,12 @@ deerflow-skill/
 │   ├── community/        # Tavily, Jina, Firecrawl 等
 │   ├── subagents/        # 子代理执行器 + Token 收集
 │   ├── runtime/          # Checkpointer、运行时、用户上下文
-│   └── ...
+│   ├── skills/           # Skill 管理 + 存储 + 工具策略
+│   ├── models/           # LLM 提供者适配
+│   ├── sandbox/          # 本地沙箱（含路径穿越防护）
+│   └── mcp/              # MCP 协议客户端
 ├── lib/                  # 辅助工具
-├── tests/                # 测试套件
+├── tests/                # 测试套件（95 个用例）
 └── dist/                 # 打包输出
 ```
 
@@ -148,6 +156,15 @@ deerflow-skill/
 ```bash
 ./scripts/package.sh
 # 输出: dist/deerflow-skill-YYYYMMDD.zip (~390KB)
+```
+
+## 开发
+
+```bash
+# 运行测试
+python -m pytest tests/ -q
+
+# 测试结果: 95 passed
 ```
 
 ## License

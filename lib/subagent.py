@@ -10,6 +10,7 @@ import re
 
 
 DEFAULT_SUBAGENT_TIMEOUT = 900
+DEFAULT_MAX_CONCURRENT_SUBAGENTS = 3
 
 SUBAGENT_TIMEOUT_ERRORS = {
     "subagent_timeout": """A subagent timed out after {timeout}s.
@@ -93,3 +94,31 @@ def is_subagent_timeout(e: Exception) -> bool:
         return "subagent" in error_msg or "task_tool" in error_msg
 
     return False
+
+
+def get_max_concurrent_subagents() -> int:
+    """Get max concurrent subagents from config, or environment, or default.
+
+    Priority: config.yaml > MAX_CONCURRENT_SUBAGENTS env var > default (3)
+    """
+    try:
+        from deerflow.config import get_app_config
+        return get_app_config().subagents.max_concurrent
+    except Exception:
+        env = os.getenv("MAX_CONCURRENT_SUBAGENTS")
+        if env is not None:
+            try:
+                v = int(env)
+                if v >= 1:
+                    return v
+            except ValueError:
+                pass
+    return DEFAULT_MAX_CONCURRENT_SUBAGENTS
+
+
+def get_subagent_config() -> dict:
+    """Get subagent configuration (backward compatibility)."""
+    return {
+        "subagent_timeout": get_subagent_timeout(),
+        "max_concurrent_subagents": get_max_concurrent_subagents(),
+    }

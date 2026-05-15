@@ -3,9 +3,14 @@
 Provides mock fixtures that simulate DeerFlowClient.stream() behavior
 without requiring the actual deerflow-harness package.
 """
+import sys
+from pathlib import Path
 from typing import Iterator
 from unittest.mock import Mock, MagicMock
 import pytest
+
+# Allow tests to import from scripts/ (skill.py was moved from root)
+sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 
 @pytest.fixture

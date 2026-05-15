@@ -100,20 +100,29 @@ class LocalSandbox(Sandbox):
 
         Returns:
             Resolved local path
+
+        Raises:
+            PermissionError: If the resolved path escapes the container.
         """
         path_str = str(path)
 
-        # Try each mapping (longest prefix first for more specific matches)
         for mapping in sorted(self.path_mappings, key=lambda m: len(m.container_path), reverse=True):
             container_path = mapping.container_path
             local_path = mapping.local_path
             if path_str == container_path or path_str.startswith(container_path + "/"):
-                # Replace the container path prefix with local path
-                relative = path_str[len(container_path) :].lstrip("/")
+                relative = path_str[len(container_path):].lstrip("/")
                 resolved = str(Path(local_path) / relative) if relative else local_path
+
+                # Guard against path traversal escaping the container
+                try:
+                    Path(resolved).resolve().relative_to(Path(local_path).resolve())
+                except ValueError:
+                    raise PermissionError(
+                        "Access denied: path escapes mounted directory",
+                        path_str,
+                    ) from None
                 return resolved
 
-        # No mapping found, return original path
         return path_str
 
     def _reverse_resolve_path(self, path: str) -> str:

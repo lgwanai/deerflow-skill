@@ -73,7 +73,7 @@ class TestSkillEntryPoint:
 
     def test_skill_file_is_executable_entry_point(self):
         """Test skill.py has if __name__ == '__main__' block."""
-        skill_path = Path(__file__).parent.parent / "skill.py"
+        skill_path = Path(__file__).parent.parent / "scripts" / "skill.py"
         content = skill_path.read_text()
         assert "if __name__ ==" in content or 'if __name__ == "__main__"' in content
 

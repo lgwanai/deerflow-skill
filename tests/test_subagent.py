@@ -100,18 +100,19 @@ class TestMaxConcurrentSubagents:
         assert DEFAULT_MAX_CONCURRENT_SUBAGENTS == 3
 
     def test_get_max_concurrent_subagents_returns_default(self):
-        """get_max_concurrent_subagents should return 3 by default."""
+        """get_max_concurrent_subagents should return 3 by default (from config)."""
         from lib.subagent import get_max_concurrent_subagents
 
-        with patch.dict(os.environ, {}, clear=True):
-            assert get_max_concurrent_subagents() == 3
+        assert get_max_concurrent_subagents() == 3
 
-    def test_get_max_concurrent_subagents_respects_env_var(self):
-        """get_max_concurrent_subagents should read MAX_CONCURRENT_SUBAGENTS from env."""
+    def test_get_max_concurrent_subagents_falls_back_to_env_var(self):
+        """get_max_concurrent_subagents reads env var when config is unavailable."""
+        from unittest.mock import patch
         from lib.subagent import get_max_concurrent_subagents
 
-        with patch.dict(os.environ, {"MAX_CONCURRENT_SUBAGENTS": "5"}):
-            assert get_max_concurrent_subagents() == 5
+        with patch("deerflow.config.get_app_config", side_effect=RuntimeError):
+            with patch.dict(os.environ, {"MAX_CONCURRENT_SUBAGENTS": "5"}):
+                assert get_max_concurrent_subagents() == 5
 
     def test_get_max_concurrent_subagents_handles_invalid_value(self):
         """get_max_concurrent_subagents should handle non-integer env vars gracefully."""
@@ -122,9 +123,10 @@ class TestMaxConcurrentSubagents:
             assert get_max_concurrent_subagents() == 3
 
     def test_get_subagent_config_includes_max_concurrent(self):
-        """get_subagent_config should include max_concurrent_subagents."""
+        """get_subagent_config should include max_concurrent_subagents from config."""
+        from unittest.mock import patch
         from lib.subagent import get_subagent_config
 
-        with patch.dict(os.environ, {"MAX_CONCURRENT_SUBAGENTS": "7"}):
-            config = get_subagent_config()
-            assert config["max_concurrent_subagents"] == 7
+        config = get_subagent_config()
+        assert "max_concurrent_subagents" in config
+        assert config["max_concurrent_subagents"] == 3

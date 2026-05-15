@@ -85,7 +85,6 @@ def stream_and_print(
             elif data.get("type") == "tool":
                 tool_name = data.get("name", "tool")
 
-                # Check for tool error
                 if data.get("error"):
                     error_content = data.get("content", "Unknown error")
                     print(

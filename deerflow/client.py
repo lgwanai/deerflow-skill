@@ -195,12 +195,14 @@ class DeerFlowClient:
 
     def _get_runnable_config(self, thread_id: str, **overrides) -> RunnableConfig:
         """Build a RunnableConfig for agent invocation."""
+        import os
         configurable = {
             "thread_id": thread_id,
             "model_name": overrides.get("model_name", self._model_name),
             "thinking_enabled": overrides.get("thinking_enabled", self._thinking_enabled),
             "is_plan_mode": overrides.get("plan_mode", self._plan_mode),
             "subagent_enabled": overrides.get("subagent_enabled", self._subagent_enabled),
+            "max_concurrent_subagents": int(os.getenv("MAX_CONCURRENT_SUBAGENTS", "3")),
         }
         return RunnableConfig(
             configurable=configurable,
@@ -297,16 +299,16 @@ class DeerFlowClient:
     @staticmethod
     def _tool_message_event(msg: ToolMessage) -> "StreamEvent":
         """Build a ``messages-tuple`` tool-result event from a ToolMessage."""
-        return StreamEvent(
-            type="messages-tuple",
-            data={
-                "type": "tool",
-                "content": DeerFlowClient._extract_text(msg.content),
-                "name": msg.name,
-                "tool_call_id": msg.tool_call_id,
-                "id": msg.id,
-            },
-        )
+        data: dict[str, Any] = {
+            "type": "tool",
+            "content": DeerFlowClient._extract_text(msg.content),
+            "name": msg.name,
+            "tool_call_id": msg.tool_call_id,
+            "id": msg.id,
+        }
+        if getattr(msg, "status", None) == "error":
+            data["error"] = True
+        return StreamEvent(type="messages-tuple", data=data)
 
     @staticmethod
     def _serialize_message(msg) -> dict:
@@ -1051,13 +1053,13 @@ class DeerFlowClient:
         """Create a single fact manually."""
         from deerflow.agents.memory.updater import create_memory_fact
 
-        return create_memory_fact(content=content, category=category, confidence=confidence)
+        return create_memory_fact(content=content, category=category, confidence=confidence, user_id=get_effective_user_id())
 
     def delete_memory_fact(self, fact_id: str) -> dict:
         """Delete a single fact from memory by fact id."""
         from deerflow.agents.memory.updater import delete_memory_fact
 
-        return delete_memory_fact(fact_id)
+        return delete_memory_fact(fact_id, user_id=get_effective_user_id())
 
     def update_memory_fact(
         self,
@@ -1074,6 +1076,7 @@ class DeerFlowClient:
             content=content,
             category=category,
             confidence=confidence,
+            user_id=get_effective_user_id(),
         )
 
     def get_memory_config(self) -> dict:

@@ -195,14 +195,13 @@ class DeerFlowClient:
 
     def _get_runnable_config(self, thread_id: str, **overrides) -> RunnableConfig:
         """Build a RunnableConfig for agent invocation."""
-        import os
         configurable = {
             "thread_id": thread_id,
             "model_name": overrides.get("model_name", self._model_name),
             "thinking_enabled": overrides.get("thinking_enabled", self._thinking_enabled),
             "is_plan_mode": overrides.get("plan_mode", self._plan_mode),
             "subagent_enabled": overrides.get("subagent_enabled", self._subagent_enabled),
-            "max_concurrent_subagents": int(os.getenv("MAX_CONCURRENT_SUBAGENTS", "3")),
+            "max_concurrent_subagents": getattr(self._app_config.subagents, "max_concurrent", 3),
         }
         return RunnableConfig(
             configurable=configurable,

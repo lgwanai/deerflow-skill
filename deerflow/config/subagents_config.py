@@ -71,6 +71,12 @@ class CustomSubagentConfig(BaseModel):
 class SubagentsAppConfig(BaseModel):
     """Configuration for the subagent system."""
 
+    max_concurrent: int = Field(
+        default=3,
+        ge=1,
+        le=10,
+        description="Maximum number of subagents that can run in parallel (default: 3)",
+    )
     timeout_seconds: int = Field(
         default=900,
         ge=1,

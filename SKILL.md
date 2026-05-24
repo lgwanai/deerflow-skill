@@ -86,10 +86,12 @@ Invoke the DeerFlow agent system directly within Claude Code. No server required
 功能: 从 GitHub 拉取最新代码并自动更新
 
 流程:
-  1. 拉取 git@github.com:lgwanai/deerflow-skill.git 最新代码
-  2. 保留配置文件（config.yaml）
-  3. 冲突文件自动备份到 backups/ 目录
-  4. 更新完成后显示更新日志
+  1. 检查项目是否已存在（通过 git remote -v）
+  2. 若首次使用，执行 git clone git@github.com:lgwanai/deerflow-skill.git
+  3. 若已存在，执行 git pull --rebase
+  4. 保留配置文件（config.yaml）
+  5. 冲突文件自动备份到 backups/YYYYMMDD_HHMMSS/ 目录
+  6. 更新完成后显示更新日志
 
 示例:
   /deer-update

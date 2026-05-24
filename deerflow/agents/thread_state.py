@@ -45,6 +45,19 @@ def merge_viewed_images(existing: dict[str, ViewedImageData] | None, new: dict[s
     return {**existing, **new}
 
 
+def merge_todos(existing: list | None, new: list | None) -> list | None:
+    """Reducer for todos list - keeps the last non-None value.
+
+    Semantics:
+    - If `new` is None (node didn't touch todos), preserve `existing`.
+    - If `new` is provided (even empty list), it represents an explicit
+      update and wins over `existing`.
+    """
+    if new is None:
+        return existing
+    return new
+
+
 class ThreadState(AgentState):
     sandbox: NotRequired[SandboxState | None]
     thread_data: NotRequired[ThreadDataState | None]

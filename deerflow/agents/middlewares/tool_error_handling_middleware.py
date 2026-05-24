@@ -164,4 +164,10 @@ def build_subagent_runtime_middlewares(
 
         middlewares.append(ViewImageMiddleware())
 
+    safety_config = app_config.safety_finish_reason
+    if safety_config.enabled:
+        from deerflow.agents.middlewares.safety_finish_reason_middleware import SafetyFinishReasonMiddleware
+
+        middlewares.append(SafetyFinishReasonMiddleware.from_config(safety_config))
+
     return middlewares

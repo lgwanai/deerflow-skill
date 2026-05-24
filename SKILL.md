@@ -19,6 +19,7 @@ Invoke the DeerFlow agent system directly within Claude Code. No server required
 | `/deer --flash` | `/d -f`, `/快问` | 快速模式（无思考、无规划） | `/deer --flash 法国首都` |
 | `/deer --pro` | `/d -p`, `/专业` | 专业模式（思考+规划） | `/deer --pro 创建REST API项目计划` |
 | `/deer --ultra` | `/d -u`, `/超级` | 超级模式（思考+规划+并行子agent） | `/deer --ultra 分析所有模块性能瓶颈` |
+| `/deer-update` | `/update`, `/更新` | 拉取最新代码并更新 | `/deer-update` |
 
 ### 指令详细说明
 
@@ -76,6 +77,26 @@ Invoke the DeerFlow agent system directly within Claude Code. No server required
   /超级 研究行业发展趋势并生成报告
 ```
 
+#### `/deer-update` - 更新 Skill
+```
+/deer-update
+/update  # 别名
+/更新  # 中文别名
+
+功能: 从 GitHub 拉取最新代码并自动更新
+
+流程:
+  1. 拉取 git@github.com:lgwanai/deerflow-skill.git 最新代码
+  2. 保留配置文件（config.yaml）
+  3. 冲突文件自动备份到 backups/ 目录
+  4. 更新完成后显示更新日志
+
+示例:
+  /deer-update
+  /update
+  /更新
+```
+
 ### 模糊匹配关键词
 
 当用户输入不是显性指令时，通过关键词推断意图：
@@ -86,6 +107,7 @@ Invoke the DeerFlow agent system directly within Claude Code. No server required
 | 网络搜索 | 搜索、查一下、调研、research、search | 标准模式 |
 | 复杂任务 | 分析、对比、规划、设计、创建 | --pro |
 | 大型任务 | 全面、所有、多个、并行、批量 | --ultra |
+| 更新 | 更新、升级、update、upgrade | /deer-update |
 
 ## Mode Presets
 

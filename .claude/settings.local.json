@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebFetch(domain:langchain-ai.github.io)",
+      "Skill(gsd:discuss-phase)",
+      "Bash(node *)",
+      "Skill(gsd:plan-phase)",
+      "Skill(gsd:execute-phase)"
+    ]
+  }
+}

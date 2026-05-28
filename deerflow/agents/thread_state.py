@@ -63,6 +63,6 @@ class ThreadState(AgentState):
     thread_data: NotRequired[ThreadDataState | None]
     title: NotRequired[str | None]
     artifacts: Annotated[list[str], merge_artifacts]
-    todos: NotRequired[list | None]
+    todos: Annotated[list | None, merge_todos]
     uploaded_files: NotRequired[list[dict] | None]
     viewed_images: Annotated[dict[str, ViewedImageData], merge_viewed_images]  # image_path -> {base64, mime_type}

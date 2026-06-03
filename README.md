@@ -2,7 +2,7 @@
 
 将 DeerFlow 智能体能力嵌入 Claude Code，无需服务器即可在本地进程内运行深度研究、多步推理、并行子代理等复杂任务。
 
-基于 [deer-flow](https://github.com/bytedance/deer-flow) 内核，持续同步上游更新（last sync: 2026.05.28，同步 34 个 commits）。
+基于 [deer-flow](https://github.com/bytedance/deer-flow) 内核，持续同步上游更新（last sync: 2026.06.04，同步 54 个 commits）。
 
 ---
 
@@ -121,6 +121,8 @@ subagents:
 - **MCP 会话池**：有状态 MCP 服务器（如 Playwright）的会话复用，仅支持 stdio 传输
 - **MiMo 推理支持**：解析小米 MiMo 模型的 reasoning_content
 - **Memory JSON 解析**：解析包装的 memory update JSON 响应
+- **工具输出预算**：大型工具输出自动截断/持久化，防止上下文爆炸
+- **事件循环优化**：Uploads 扫描异步化，不阻塞主线程
 - **Async/Sync 桥接**：`tools/sync.py` 自动为 async 工具生成同步包装器
 - **沙箱安全**：路径穿越防护，禁止越权访问文件系统
 - **输出隔离**：日志到 stderr，AI 内容到 stdout，文件输出零污染

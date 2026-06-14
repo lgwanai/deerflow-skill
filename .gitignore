@@ -68,3 +68,6 @@ Thumbs.db
 checkpoints.db
 memory.json
 uploads/
+
+# CodeGraph
+.codegraph/

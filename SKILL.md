@@ -128,6 +128,26 @@ Invoke the DeerFlow agent system directly within Claude Code. No server required
 - **Planning Mode**: Structured task decomposition with TodoList
 - **Subagent Delegation**: Parallel task execution with specialized agents
 
+## CLI Usage
+
+DeerFlow can run as a standalone CLI tool, no Claude Code required.
+
+```bash
+# Interactive chat (ENTER to talk, /exit to quit)
+./scripts/chat.sh
+./scripts/chat.sh --flash
+
+# One-shot execution
+./scripts/chat.sh -c "What is Python's GIL?"
+./scripts/chat.sh --pro -c "Plan a REST API project"
+./scripts/chat.sh --ultra -c "Compare Tesla and BYD tech stacks"
+
+# Write output to file
+./scripts/chat.sh -o report.md -c "Research AI trends 2026"
+```
+
+**Interactive commands**: `/help`, `/clear`, `/save <file>`, `/tools`, `/mode <name>`, `/exit`
+
 ## Configuration
 
 Requires config.yaml with model credentials. Copy config.example.yaml to config.yaml and configure:

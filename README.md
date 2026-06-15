@@ -33,21 +33,22 @@
 /deer --ultra 对比三家竞品公司的技术栈
 ```
 
-### 命令行使用
+### 命令行使用（独立运行，无需 Claude Code）
 
 ```bash
-# 快速问答
-./scripts/chat.sh --flash "Python 的 GIL 是什么"
+# 交互式对话（ENTER 发送，/exit 退出）
+./scripts/chat.sh
 
-# 深度调研
-./scripts/chat.sh --pro "分析 2026 年 AI 行业趋势"
+# 一次性执行
+./scripts/chat.sh -c "Python 的 GIL 是什么"
+./scripts/chat.sh --pro -c "分析 2026 年 AI 行业趋势"
+./scripts/chat.sh --ultra -c "对比国内外新能源汽车技术路线"
 
-# 并行分析
-./scripts/chat.sh --ultra "对比国内外新能源汽车技术路线"
-
-# 生成报告文件（日志在终端，AI 内容进文件）
-./scripts/chat.sh --flash "调研特斯拉和比亚迪" > tesla_vs_byd.md
+# 输出到文件
+./scripts/chat.sh -o report.md -c "研究 AI 行业趋势"
 ```
+
+**交互命令**：`/help` `/clear` `/save <file>` `/tools` `/mode <name>` `/exit`
 
 ### 模式说明
 

@@ -2,7 +2,7 @@
 
 将 DeerFlow 智能体能力嵌入 Claude Code，无需服务器即可在本地进程内运行深度研究、多步推理、并行子代理等复杂任务。
 
-基于 [deer-flow](https://github.com/bytedance/deer-flow) 内核，持续同步上游更新（last sync: 2026.06.14，同步 100 个 commits）。
+基于 [deer-flow](https://github.com/bytedance/deer-flow) 内核，持续同步上游更新（last sync: 2026.07.01，同步 130+ 个 commits）。
 
 ---
 
@@ -132,6 +132,51 @@ subagents:
 
 ---
 
+## 内置技能 (19 个)
+
+Agent 启动时自动加载 `skills/public/` 下的技能模块，按需调用。
+
+### 多媒体生成
+| 技能 | 说明 | 依赖 |
+|------|------|------|
+| image-generation | AI 图片生成 | MINIMAX_API_KEY |
+| video-generation | AI 视频生成 | MINIMAX_API_KEY |
+| music-generation | AI 音乐生成 | MINIMAX_API_KEY |
+| podcast-generation | AI 播客生成 | MINIMAX_API_KEY |
+
+### 数据分析
+| 技能 | 说明 |
+|------|------|
+| data-analysis | Python 数据分析（需 sandbox） |
+| chart-visualization | 24 种图表生成（柱/饼/雷达/桑基/词云...）|
+| ppt-generation | PPT 幻灯片生成 |
+
+### 深度研究
+| 技能 | 说明 |
+|------|------|
+| deep-research | 多步深度调研 |
+| consulting-analysis | 专业咨询分析报告 |
+| github-deep-research | GitHub 仓库深度分析 |
+| systematic-literature-review | 学术论文系统综述 + arxiv |
+| academic-paper-review | 学术论文审阅 |
+
+### 设计与开发
+| 技能 | 说明 |
+|------|------|
+| frontend-design | 前端 UI 设计 |
+| web-design-guidelines | Web 界面设计规范 |
+| code-documentation | 代码文档生成 |
+
+### 其他
+| 技能 | 说明 |
+|------|------|
+| bootstrap | 初始化 Agent SOUL |
+| newsletter-generation | 新闻简报生成 |
+| find-skills | 技能发现与安装 |
+| surprise-me | 随机技能推荐 |
+
+---
+
 ## 项目结构
 
 ```
@@ -148,13 +193,15 @@ deerflow-skill/
 │   ├── agents/           # Agent 编排 + 中间件
 │   ├── tools/            # 工具定义 + sync 包装器
 │   ├── config/           # 20+ 配置模型
-│   ├── community/        # Tavily, Jina, Firecrawl 等
+│   ├── community/        # Tavily, Jina, Brave, SearXNG, Browserless 等
 │   ├── subagents/        # 子代理执行器 + Token 收集
 │   ├── runtime/          # Checkpointer、运行时、用户上下文
-│   ├── skills/           # Skill 管理 + 存储 + 工具策略
-│   ├── models/           # LLM 提供者适配
+│   ├── models/           # LLM 提供者适配 (DeepSeek, StepFun, MiniMax...)
 │   ├── sandbox/          # 本地沙箱（含路径穿越防护）
+│   ├── skills/           # Skill 管理 + 存储 + 工具策略
 │   └── mcp/              # MCP 协议客户端
+├── skills/               # 内置技能定义（19 个）
+│   └── public/           # 多媒体生成 / 数据分析 / 深度研究 / 设计
 ├── lib/                  # 辅助工具
 ├── tests/                # 测试套件（95 个用例）
 └── dist/                 # 打包输出

@@ -142,6 +142,10 @@ tools:
   #   max_results: 5
   #   api_key: $SERPER_API_KEY
 
+  # NOTE: Image/Video/Music/Podcast generation skills (skills/public/)
+  # are auto-loaded by the agent. Set MINIMAX_API_KEY to enable them.
+  # No tool config entry required — just configure the model and API key.
+
 # ============================================================================
 # Subagents Configuration
 # ============================================================================
@@ -171,11 +175,15 @@ sandbox:
 #   ANTHROPIC_API_KEY=sk-ant-xxx       # Anthropic API key
 #   STEPFUN_API_KEY=xxx                # StepFun API key (optional)
 #
+# For generation skills (image/video/music/podcast):
+#   MINIMAX_API_KEY=xxx                # MiniMax API key (https://platform.minimax.io)
+#
 # Required for web tools:
 #   JINA_API_KEY=jina_xxx              # Jina AI API key (https://jina.ai/reader)
 #
 # Optional web tools (one of):
 #   TAVILY_API_KEY=tvly-xxx            # Tavily search API key (https://tavily.com)
 #   BRAVE_SEARCH_API_KEY=BSAxxx        # Brave Search API key (https://brave.com/search/api/)
+#   SERPER_API_KEY=xxx                 # Serper Google Search API key (https://serper.dev)
 #
 # Or create a .env file and use python-dotenv

@@ -1,8 +1,8 @@
 # DeerFlow Skill
 
-将 DeerFlow 智能体能力嵌入 Claude Code，无需服务器即可在本地进程内运行深度研究、多步推理、并行子代理等复杂任务。
+将 DeerFlow 智能体能力嵌入 Claude Code，无需服务器即可在本地进程内运行深度研究、多步推理、并行子代理等复杂任务。**支持独立 CLI 运行**，不依赖 Claude Code 也可直接使用。
 
-基于 [deer-flow](https://github.com/bytedance/deer-flow) 内核，持续同步上游更新（last sync: 2026.07.01，同步 130+ 个 commits）。
+基于 [deer-flow](https://github.com/bytedance/deer-flow) 内核，持续同步上游更新（last sync: 2026.07 最新，同步 130+ 个 commits）。
 
 ---
 
@@ -121,8 +121,9 @@ subagents:
 - **安全终止处理**：Provider 安全过滤时自动抑制截断的 tool_calls（OpenAI/Anthropic/Gemini）
 - **MCP 会话池**：有状态 MCP 服务器会话复用，修复跨任务 cancel-scope 错误
 - **子代理状态契约**：结构化 subagent_status 字段，替代字符串解析
-- **Brave/SearXNG/Browserless**：新增 3 个社区搜索/抓取工具
+- **Brave/SearXNG/Serper/Browserless**：社区搜索/图片搜索/抓取工具
 - **StepFun 模型**：适配 step-3.7-flash/step-3.5-flash 推理模型
+- **MiniMax 模型**：文本对话 + 图片/视频/音乐/播客生成
 - **MiMo 推理支持**：解析小米 MiMo 模型的 reasoning_content
 - **Memory JSON 解析**：解析包装的 memory update JSON 响应
 - **工具输出预算**：大型工具输出自动截断/持久化，防止上下文爆炸
@@ -194,7 +195,7 @@ deerflow-skill/
 │   ├── agents/           # Agent 编排 + 中间件
 │   ├── tools/            # 工具定义 + sync 包装器
 │   ├── config/           # 20+ 配置模型
-│   ├── community/        # Tavily, Jina, Brave, SearXNG, Browserless 等
+│   ├── community/        # Tavily, Jina, Brave, SearXNG, Serper, Browserless 等
 │   ├── subagents/        # 子代理执行器 + Token 收集
 │   ├── runtime/          # Checkpointer、运行时、用户上下文
 │   ├── models/           # LLM 提供者适配 (DeepSeek, StepFun, MiniMax...)

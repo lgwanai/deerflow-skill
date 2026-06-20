@@ -102,6 +102,14 @@ tools:
   #   max_results: 5
   #   api_key: $BRAVE_SEARCH_API_KEY
 
+  # Web search tool (uses Serper - Google Search API, requires SERPER_API_KEY)
+  # Sign up at https://serper.dev
+  # - name: web_search
+  #   group: web
+  #   use: deerflow.community.serper.tools:web_search_tool
+  #   max_results: 5
+  #   api_key: $SERPER_API_KEY
+
   # Web search tool (uses SearXNG, self-hosted, no API key required)
   # Deploy your own instance: https://github.com/searxng/searxng
   # - name: web_search
@@ -125,6 +133,14 @@ tools:
     use: deerflow.community.jina_ai.tools:web_fetch_tool
     timeout: 10
     api_key: $JINA_API_KEY
+
+  # Image search tool (uses Serper - Google Images API, requires SERPER_API_KEY)
+  # Sign up at https://serper.dev
+  # - name: image_search
+  #   group: web
+  #   use: deerflow.community.serper.tools:image_search_tool
+  #   max_results: 5
+  #   api_key: $SERPER_API_KEY
 
 # ============================================================================
 # Subagents Configuration
